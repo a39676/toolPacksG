@@ -9,7 +9,13 @@ import java.security.NoSuchAlgorithmException;
 
 public class EncodeUtil {
 
-	public String byteArrayToHex(byte[] byteArray) {
+	/**
+	 * 转16进制
+	 * 
+	 * @param byteArray
+	 * @return
+	 */
+	public String byteArrayToHex16(byte[] byteArray) {
 		// 首先初始化一个字符数组，用来存放每个16进制字符
 		char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
@@ -25,9 +31,9 @@ public class EncodeUtil {
 		// 字符数组组合成字符串返回
 		return new String(resultCharArray);
 	}
-	
-	public String byteArrayMD5(byte[] inputByteArray) {
-		
+
+	public byte[] byteArrayMD5(byte[] inputByteArray) {
+
 		MessageDigest messageDigest;
 		byte[] resultByteArray = null;
 		try {
@@ -37,14 +43,14 @@ public class EncodeUtil {
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		return byteArrayToHex(resultByteArray);
+		return resultByteArray;
 	}
 
 	public String stringMD5(String input) {
-		return byteArrayMD5(input.getBytes());
+		return byteArrayToHex16(byteArrayMD5(input.getBytes()));
 	}
 
-	public String fileMD5(String inputFile) {
+	public byte[] fileMD5(String inputFile) {
 
 		// 缓冲区大小（这个可以抽出一个参数）
 		int bufferSize = 1 * 1024 * 1024;
@@ -73,8 +79,7 @@ public class EncodeUtil {
 			// 拿到结果，也是字节数组，包含16个元素
 			byte[] resultByteArray = messageDigest.digest();
 
-			// 同样，把字节数组转换成字符串
-			return byteArrayToHex(resultByteArray);
+			return resultByteArray;
 
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();

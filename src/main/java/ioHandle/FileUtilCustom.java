@@ -20,17 +20,15 @@ import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 
 public class FileUtilCustom {
-	
+
 	public String getStringFromFile(String filePath, String encodeType) {
-		
+
 		try {
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(
-							new FileInputStream(filePath), encodeType));
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), encodeType));
 			StringBuffer sb = new StringBuffer();
-			
+
 			String sCurrentLine = null;
-			
+
 			while ((sCurrentLine = br.readLine()) != null) {
 				sb.append(sCurrentLine + "\n");
 			}
@@ -40,60 +38,93 @@ public class FileUtilCustom {
 			e.printStackTrace();
 			return null;
 		} finally {
-			
+
 		}
 	}
-	
+
 	public String getStringFromFile(String filePath) {
 		return getStringFromFile(filePath, "utf8");
 	}
-	
-	public byte[] getByteFromFile(String path) throws Exception {  
-        byte[] b = null;  
-        File file = new File(path);  
-  
-        FileInputStream fis = null;  
-        ByteArrayOutputStream ops = null;  
-        try {  
-  
-            if (!file.exists()) {  
-                System.out.println("文件不存在！");  
-            }  
-            if (file.isDirectory()) {  
-                System.out.println("不能上传目录！");  
-            }  
-  
-            byte[] temp = new byte[2048];  
-  
-            fis = new FileInputStream(file);  
-            ops = new ByteArrayOutputStream(2048);  
-  
-            int n;  
-            while ((n = fis.read(temp)) != -1) {  
-                ops.write(temp, 0, n);  
-            }  
-            b = ops.toByteArray();  
-        } catch (Exception e) {  
-            throw new Exception();  
-        } finally {  
-            if (ops != null) {  
-                ops.close();  
-            }  
-            if (fis != null) {  
-                fis.close();  
-            }  
-        }  
-        return b;  
-    }
-	
+
+	public byte[] getByteFromFile(String path) throws Exception {
+		byte[] b = null;
+		File file = new File(path);
+
+		FileInputStream fis = null;
+		ByteArrayOutputStream ops = null;
+		try {
+
+			if (!file.exists()) {
+				System.out.println("文件不存在！");
+			}
+			if (file.isDirectory()) {
+				System.out.println("不能上传目录！");
+			}
+
+			byte[] temp = new byte[2048];
+
+			fis = new FileInputStream(file);
+			ops = new ByteArrayOutputStream(2048);
+
+			int n;
+			while ((n = fis.read(temp)) != -1) {
+				ops.write(temp, 0, n);
+			}
+			b = ops.toByteArray();
+		} catch (Exception e) {
+			throw new Exception();
+		} finally {
+			if (ops != null) {
+				ops.close();
+			}
+			if (fis != null) {
+				fis.close();
+			}
+		}
+		return b;
+	}
+
+	/**
+	 * 写入文件(先覆盖文件原有内容)
+	 * 
+	 * @param byteArray
+	 * @param filePath
+	 */
 	public void byteToFile(byte[] byteArray, String filePath) {
-		
-		if(byteArray == null || byteArray.length <= 0) {
+		byteToFile(byteArray, filePath, false);
+	}
+
+	/**
+	 * 写入文件(在末尾追加)
+	 * 
+	 * @param byteArray
+	 * @param filePath
+	 */
+	public void byteToFileAppendAtEnd(byte[] byteArray, String filePath) {
+		byteToFile(byteArray, filePath, true);
+	}
+
+	/**
+	 * 写入文件
+	 * 
+	 * @param byteArray
+	 * @param filePath
+	 * @param appendFlag
+	 *            是否在末尾追加
+	 */
+	public void byteToFile(byte[] byteArray, String filePath, boolean appendFlag) {
+		if (byteArray == null || byteArray.length <= 0) {
 			return;
 		}
-		
+
 		File file = new File(filePath);
-		if(!file.exists()) {
+		File paraentFolder = file.getParentFile();
+		
+		if(!paraentFolder.exists()) {
+			paraentFolder.mkdirs();
+		}
+		
+		if (!file.exists()) {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
@@ -102,86 +133,64 @@ public class FileUtilCustom {
 			}
 		}
 
-		if(!file.isFile()) {
+		if (!file.isFile()) {
 			return;
 		}
-		
+
 		try {
-			FileUtils.writeByteArrayToFile(file, byteArray);
+			FileUtils.writeByteArrayToFile(file, byteArray, appendFlag);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 
-	}
-	
-	public void fileRecode(String inputPath, String outputPath, String inputCode, String outputCode) throws Exception {  
-        File inputFile = new File(inputPath);
-        File outputFile = new File(outputPath);
-  
-        FileInputStream fis = null;  
-        ByteArrayOutputStream ops = null;  
-        
-        try {  
-        	
-        	if (!inputFile.exists()) {  
-        		System.out.println("文件不存在！");  
-        		return;
-        	}  
-        	if (inputFile.isDirectory()) {  
-        		System.out.println("不能指定一个目录！");
-        		return;
-        	}  
-        	if(!outputFile.exists()) {
-        		outputFile.createNewFile();
-        	}
-        	
-            BufferedReader br = new BufferedReader(
-         		   new InputStreamReader(
-                           new FileInputStream(inputPath), inputCode));
-            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outputFile, true), outputCode);
-            
-            String line = br.readLine();
-            while (line != null) {
-                if(line != null && line.length() > 0) {
-        			writer.write(line);
-        		}
-                line = br.readLine();
-            }
-            br.close();
-            writer.close();
-            
-        } catch (Exception e) {  
-        	e.printStackTrace();
-        } finally {  
-        	if (ops != null) {  
-        		ops.close();  
-        	}  
-        	if (fis != null) {  
-        		fis.close();  
-        	}  
-        }  
-        
-	}
-	
-	public void byteToFileAppendAtEnd(byte[] byteArray, String filePath) {
-		
-		if(byteArray == null || byteArray.length <= 0) {
-			return;
-		}
-		
-		File file = new File(filePath);
-		if(!file.exists() || !file.isFile()) {
-			return;
-		}
-		
+	public void fileRecode(String inputPath, String outputPath, String inputCode, String outputCode) throws Exception {
+		File inputFile = new File(inputPath);
+		File outputFile = new File(outputPath);
+
+		FileInputStream fis = null;
+		ByteArrayOutputStream ops = null;
+
 		try {
-			FileUtils.writeByteArrayToFile(file, byteArray, true);
+
+			if (!inputFile.exists()) {
+				System.out.println("文件不存在！");
+				return;
+			}
+			if (inputFile.isDirectory()) {
+				System.out.println("不能指定一个目录！");
+				return;
+			}
+			if (!outputFile.exists()) {
+				outputFile.createNewFile();
+			}
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(inputPath), inputCode));
+			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outputFile, true), outputCode);
+
+			String line = br.readLine();
+			while (line != null) {
+				if (line != null && line.length() > 0) {
+					writer.write(line);
+				}
+				line = br.readLine();
+			}
+			br.close();
+			writer.close();
+
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if (ops != null) {
+				ops.close();
+			}
+			if (fis != null) {
+				fis.close();
+			}
 		}
 
 	}
-	
+
 	public Properties getPropertiesFromFile(String filePath) {
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -196,7 +205,7 @@ public class FileUtilCustom {
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			
+
 		} finally {
 			if (input != null) {
 				try {
@@ -206,12 +215,12 @@ public class FileUtilCustom {
 				}
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public boolean setPropertiesToFile(String filePath, HashMap<String, String> propertiesMap) {
-		
+
 		Properties prop = new Properties();
 		OutputStream output = null;
 
@@ -219,12 +228,12 @@ public class FileUtilCustom {
 
 			output = new FileOutputStream(filePath);
 
-			for(Map.Entry<String, String> entry : propertiesMap.entrySet()) {
+			for (Map.Entry<String, String> entry : propertiesMap.entrySet()) {
 				prop.setProperty(entry.getKey(), entry.getValue());
 			}
 
 			prop.store(output, null);
-			
+
 			return true;
 		} catch (Exception io) {
 			io.printStackTrace();
@@ -238,23 +247,23 @@ public class FileUtilCustom {
 			}
 
 		}
-		
+
 		return false;
 	}
-	
+
 	public void createFolder(String targetPath, List<String> newFolderNames) {
 		File tmpFile;
-		
-		for(String folderName : newFolderNames) {
+
+		for (String folderName : newFolderNames) {
 			tmpFile = new File(targetPath + folderName);
 			tmpFile.mkdir();
 		}
 	}
-	
+
 	public void createFile(String targetPath, List<String> newFileNames) {
 		File tmpFile;
-		
-		for(String fileName : newFileNames) {
+
+		for (String fileName : newFileNames) {
 			tmpFile = new File(targetPath + fileName);
 			try {
 				tmpFile.createNewFile();
@@ -263,9 +272,8 @@ public class FileUtilCustom {
 			}
 		}
 	}
-	
-	public byte[] encodeFileToBase64(String filePath)
-			throws IOException {
+
+	public byte[] encodeFileToBase64(String filePath) throws IOException {
 
 		File file = new File(filePath);
 		byte[] bytes = loadFile(file);
@@ -276,28 +284,28 @@ public class FileUtilCustom {
 
 	@SuppressWarnings("resource")
 	public byte[] loadFile(File file) throws IOException {
-	    InputStream is = new FileInputStream(file);
+		InputStream is = new FileInputStream(file);
 
-	    long length = file.length();
-	    if (length > Integer.MAX_VALUE) {
-	        // File is too large
-	    }
-	    byte[] bytes = new byte[(int)length];
-	    
-	    int offset = 0;
-	    int numRead = 0;
-	    while (offset < bytes.length
-	           && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-	        offset += numRead;
-	    }
+		long length = file.length();
+		if (length > Integer.MAX_VALUE) {
+			// File is too large
+		}
+		byte[] bytes = new byte[(int) length];
 
-	    if (offset < bytes.length) {
-	        throw new IOException("Could not completely read file " + file.getName());
-	    }
+		int offset = 0;
+		int numRead = 0;
+		while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+			offset += numRead;
+		}
 
-	    is.close();
-	    return bytes;
+		if (offset < bytes.length) {
+			throw new IOException("Could not completely read file " + file.getName());
+		}
+
+		is.close();
+		return bytes;
 	}
+
 	public static void main(String[] args) {
 		FileUtilCustom fc = new FileUtilCustom();
 		String targetPath = "d:/auxiliary/tmp/";

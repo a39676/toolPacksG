@@ -4,18 +4,20 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 
@@ -119,11 +121,11 @@ public class FileUtilCustom {
 
 		File file = new File(filePath);
 		File paraentFolder = file.getParentFile();
-		
-		if(!paraentFolder.exists()) {
+
+		if (!paraentFolder.exists()) {
 			paraentFolder.mkdirs();
 		}
-		
+
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -260,7 +262,7 @@ public class FileUtilCustom {
 		}
 	}
 
-	public void createFile(String targetPath, List<String> newFileNames) {
+	public void createFiles(String targetPath, List<String> newFileNames) {
 		File tmpFile;
 
 		for (String fileName : newFileNames) {
@@ -306,13 +308,63 @@ public class FileUtilCustom {
 		return bytes;
 	}
 
-	public static void main(String[] args) {
-		FileUtilCustom fc = new FileUtilCustom();
-		String targetPath = "d:/auxiliary/tmp/";
-		List<String> fileNames = new ArrayList<String>();
-		fileNames.add("1.1 获取启动页广告.txt");
-		fileNames.add("1.2 获取引导页列表.txt");
-		fc.createFile(targetPath, fileNames);
-	}
+	public void filesToZip(String outputZipPath, List<String> filePaths) {
+		try {
+			FileOutputStream fos = new FileOutputStream("d:/auxiliary/tmp/test.zip");
+			ZipOutputStream zos = new ZipOutputStream(fos);
+			
+			for(String filePath : filePaths) {
+				addToZipFile(filePath, zos);
+			}
 
+			zos.close();
+			fos.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void fileToZip(String outputZipPath, String filePath) {
+		try {
+			FileOutputStream fos = new FileOutputStream("d:/auxiliary/tmp/test.zip");
+			ZipOutputStream zos = new ZipOutputStream(fos);
+			
+			addToZipFile(filePath, zos);
+
+			zos.close();
+			fos.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void addToZipFile(String filePath, ZipOutputStream zos) {
+
+		try {
+			File file = new File(filePath);
+			FileInputStream fis;
+			fis = new FileInputStream(file);
+			ZipEntry zipEntry = new ZipEntry(file.getName());
+			zos.putNextEntry(zipEntry);
+
+			byte[] bytes = new byte[1024];
+			int length;
+			while ((length = fis.read(bytes)) >= 0) {
+				zos.write(bytes, 0, length);
+			}
+			zos.closeEntry();
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 }

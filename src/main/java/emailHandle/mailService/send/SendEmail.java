@@ -1,5 +1,7 @@
 package emailHandle.mailService.send;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -24,13 +26,25 @@ public class SendEmail {
 		Session session = MailSession.getSmtpSslSession(properties, userName, password);
 		
 		Message message = new MailMessageCreator().createSimpleMessage(session, userName, sendTo, title, context);
-//		List<String> attachmentsList = new ArrayList<String>();
-//		attachmentsList.add("D:/auxiliary/tmp/tmp.txt");
-//		attachmentsList.add("D:/auxiliary/tmp/tmp.html");
-//		attachmentsList.add("D:/auxiliary/tmp/tmp0.txt");
-//		attachmentsList.add("D:/auxiliary/tmp/tmp.jsp");
-//		attachmentsList.add("D:/auxiliary/tmp/tmp2.txt");
-//		Message message = new MailMessageCreator().createMailWithAttachments(session, sendFrom, sendTo, "测试标题3", "测试附件2", attachmentsList);
+		
+		try {
+			Transport.send(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendMailWithAttachment(String userName, String password, String sendTo, String title, String context, List<String> attachmentPathList, Properties properties) {
+
+		Session session = MailSession.getSmtpSslSession(properties, userName, password);
+		
+		List<String> attachmentsList = new ArrayList<String>();
+		
+		for(String attachementPath : attachmentPathList) {
+			attachmentsList.add(attachementPath);
+		}
+		
+		Message message = new MailMessageCreator().createMailWithAttachments(session, userName, sendTo, title, context, attachmentsList);
 		
 		try {
 			Transport.send(message);

@@ -35,7 +35,7 @@ public class MailMessageCreator {
 	
 	public Message createMailWithAttachments(Session session, String sendFrom, String sendTo, String subject, String text, List<String> fileNames) {
 		Message message = null;
-		Multipart attachement = new MailAttachment().createAttachments(fileNames);
+		Multipart attachement = new MailAttachment().createAttachments(text, fileNames);
 		
 		try {
 			message = new MimeMessage(session);
@@ -55,6 +55,10 @@ public class MailMessageCreator {
 		}
 		
 		return null;
+	}
+	
+	public Message createMailWithAttachments(Session session, String sendFrom, String sendTo, String subject, List<String> fileNames) {
+		return createMailWithAttachments(session, sendFrom, sendTo, subject, null, fileNames);
 	}
 	
 }

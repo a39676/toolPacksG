@@ -310,7 +310,7 @@ public class FileUtilCustom {
 
 	public void filesToZip(String outputZipPath, List<String> filePaths) {
 		try {
-			FileOutputStream fos = new FileOutputStream("d:/auxiliary/tmp/test.zip");
+			FileOutputStream fos = new FileOutputStream(outputZipPath);
 			ZipOutputStream zos = new ZipOutputStream(fos);
 			
 			for(String filePath : filePaths) {

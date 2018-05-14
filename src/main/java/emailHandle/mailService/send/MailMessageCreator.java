@@ -33,7 +33,7 @@ public class MailMessageCreator {
 	}
 	
 	
-	public Message createMailWithAttachments(Session session, String sendFrom, String sendTo, String subject, String text, String... fileNames) {
+	public Message createMailWithAttachments(Session session, String sendFrom, String sendTo, String subject, String text, List<String> fileNames) {
 		Message message = null;
 		Multipart attachement = new MailAttachment().createAttachments(fileNames);
 		
@@ -56,15 +56,5 @@ public class MailMessageCreator {
 		
 		return null;
 	}
-	
-	
-	public Message createMailWithAttachments(Session session, String sendFrom, String sendTo, String subject, String text, List<String> fileNameList) {
-
-		String[] fileNames = new String[fileNameList.size()]; 
-	    fileNames = fileNameList.toArray(fileNames);
-	    
-	    return createMailWithAttachments(session, sendFrom, sendTo, subject, text, fileNames);
-	}
-	
 	
 }

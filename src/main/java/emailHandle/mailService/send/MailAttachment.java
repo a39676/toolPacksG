@@ -12,13 +12,13 @@ import javax.mail.internet.MimeMultipart;
 
 public class MailAttachment {
 	
-	public Multipart createAttachments(String... fileNames) {
+	public Multipart createAttachments(String text, List<String> fileNames) {
 		
 		Multipart multipart = new MimeMultipart();
 		try {
 			
 			BodyPart textPart = new MimeBodyPart();
-			textPart.setText("This is message body");
+			textPart.setText(text);
 			multipart.addBodyPart(textPart);
 
 			BodyPart attachmentPart = null;
@@ -42,11 +42,7 @@ public class MailAttachment {
 	
 	
 	public Multipart createAttachments(List<String> fileNameList) {
-		
-		String[] fileNames = new String[fileNameList.size()]; 
-	    fileNames = fileNameList.toArray(fileNames);
-	    
-	    return createAttachments(fileNames);
+	    return createAttachments(null, fileNameList);
 	}
 
 }

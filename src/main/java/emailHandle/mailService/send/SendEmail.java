@@ -21,7 +21,7 @@ public class SendEmail {
 	 * @param context
 	 * @param properties (smtp)
 	 */
-	public void sendSimpalMail(String userName, String password, String sendTo, String title, String context, Properties properties) {
+	public void sendSimpleMail(String userName, String password, String sendTo, String title, String context, Properties properties) {
 
 		Session session = MailSession.getSmtpSslSession(properties, userName, password);
 		

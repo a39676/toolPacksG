@@ -21,14 +21,16 @@ public class MailAttachment {
 			textPart.setText(text);
 			multipart.addBodyPart(textPart);
 
-			BodyPart attachmentPart = null;
-			DataSource source = null;
-			for(String filePath : filePaths) {
-				source = new FileDataSource(filePath);
-				attachmentPart = new MimeBodyPart();
-				attachmentPart.setDataHandler(new DataHandler(source));
-				attachmentPart.setFileName(source.getName());
-				multipart.addBodyPart(attachmentPart);
+			if(filePaths != null && filePaths.size() > 0) {
+				BodyPart attachmentPart = null;
+				DataSource source = null;
+				for(String filePath : filePaths) {
+					source = new FileDataSource(filePath);
+					attachmentPart = new MimeBodyPart();
+					attachmentPart.setDataHandler(new DataHandler(source));
+					attachmentPart.setFileName(source.getName());
+					multipart.addBodyPart(attachmentPart);
+				}
 			}
 			
 			return multipart;

@@ -51,7 +51,7 @@ public class MailMessageCreator {
 				message.setSubject(subject);
 			}
 			if(StringUtils.isNotBlank(content)) {
-				message.setSubject(content);
+				message.setText(content);
 			}
 			
 			message.setContent(attachement);

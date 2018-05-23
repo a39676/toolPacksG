@@ -1,6 +1,5 @@
 package emailHandle.mailService.send;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -18,14 +17,14 @@ public class SendEmail {
 	 * @param password
 	 * @param sendTo
 	 * @param title
-	 * @param context
+	 * @param content
 	 * @param properties (smtp)
 	 */
-	public void sendSimpleMail(String userName, String password, String sendTo, String title, String context, Properties properties) {
+	public void sendSimpleMail(String userName, String password, String sendTo, String title, String content, Properties properties) {
 
 		Session session = MailSession.getSmtpSslSession(properties, userName, password);
 		
-		Message message = new MailMessageCreator().createSimpleMessage(session, userName, sendTo, title, context);
+		Message message = new MailMessageCreator().createSimpleMessage(session, userName, sendTo, title, content);
 		
 		try {
 			Transport.send(message);
@@ -34,17 +33,24 @@ public class SendEmail {
 		}
 	}
 	
-	public void sendMailWithAttachment(String userName, String password, String sendTo, String title, String context, List<String> attachmentPathList, Properties properties) {
+	public void sendMailWithAttachment(String userName, String password, String sendTo, String title, String content, List<String> attachmentPathList, Properties properties) {
 
 		Session session = MailSession.getSmtpSslSession(properties, userName, password);
 		
-		List<String> attachmentsList = new ArrayList<String>();
+		Message message = new MailMessageCreator().createMailWithAttachments(session, userName, sendTo, title, content, attachmentPathList);
 		
-		for(String attachementPath : attachmentPathList) {
-			attachmentsList.add(attachementPath);
+		try {
+			Transport.send(message);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
+	
+	public void sendMail(String userName, String password, List<String> sendTo, List<String> cc, List<String>bcc, String subject, String content, List<String> attachmentPathList, Properties properties) {
+
+		Session session = MailSession.getSmtpSslSession(properties, userName, password);
 		
-		Message message = new MailMessageCreator().createMailWithAttachments(session, userName, sendTo, title, context, attachmentsList);
+		Message message = new MailMessageCreator().createMessage(session, userName, sendTo, cc, bcc, subject, content, attachmentPathList);
 		
 		try {
 			Transport.send(message);

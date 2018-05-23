@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMultipart;
 
 public class MailAttachment {
 	
-	public Multipart createAttachments(String text, List<String> fileNames) {
+	public Multipart createAttachments(String text, List<String> filePaths) {
 		
 		Multipart multipart = new MimeMultipart();
 		try {
@@ -23,8 +23,8 @@ public class MailAttachment {
 
 			BodyPart attachmentPart = null;
 			DataSource source = null;
-			for(String fileName : fileNames) {
-				source = new FileDataSource(fileName);
+			for(String filePath : filePaths) {
+				source = new FileDataSource(filePath);
 				attachmentPart = new MimeBodyPart();
 				attachmentPart.setDataHandler(new DataHandler(source));
 				attachmentPart.setFileName(source.getName());

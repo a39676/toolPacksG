@@ -3,92 +3,104 @@ package numericHandel;
 import java.text.NumberFormat;
 
 public class NumericUtilCustom {
-	
+
 	public static String simpleNumberRegex = "-?\\d+($|\\.?\\d+)";
 	public static String integerRegex = "-?\\d+";
 	public static String positiveIntegerRegex = "\\d+";
 	public static String decimalRegex = "-?\\d+\\.\\d+";
 	public static String ipRegex = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
-	
+
 	public static Number strToNumber(String numberStr) {
-		
-		if(matchSimpleNumber(numberStr)) {
+
+		if (matchSimpleNumber(numberStr)) {
 			System.out.println("not a simple number");
 			return null;
 		}
-		
+
 		Number num = null;
-		
+
 		try {
 			num = NumberFormat.getInstance().parse(numberStr);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 		return num;
 	}
-	
+
 	public static boolean matchSimpleNumber(String numberStr) {
 		if (isEmpty(numberStr)) {
 			return false;
 		}
 		return numberStr.matches(numberStr);
 	}
-	
+
 	public static boolean matchInteger(String numberStr) {
 		if (isEmpty(numberStr)) {
 			return false;
 		}
 		return numberStr.matches(integerRegex);
 	}
-	
+
 	public static boolean matchPositiveInteger(String numberStr) {
 		if (isEmpty(numberStr)) {
 			return false;
 		}
 		return numberStr.matches(positiveIntegerRegex);
 	}
-	
+
 	public static boolean matchDecimal(String numberStr) {
 		if (isEmpty(numberStr)) {
 			return false;
 		}
 		return numberStr.matches(decimalRegex);
 	}
-	
+
 	private static boolean isEmpty(String str) {
-		return (str == null || str == "");
+		int strLen;
+		if (str == null || (strLen = str.length()) == 0) {
+			return true;
+		}
+		for (int i = 0; i < strLen; i++) {
+			if (!Character.isWhitespace(str.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static boolean matchIpRegex(String ipAddress) {
+		if(isEmpty(ipAddress)) {
+			return false;
+		}
 		try {
 			String[] ipAddressInArray = ipAddress.split("\\.");
-			
-			if(ipAddressInArray.length != 4) {
+
+			if (ipAddressInArray.length != 4) {
 				return false;
 			}
-			
+
 			for (int i = 0; i < ipAddressInArray.length; i++) {
-				
+
 				int ip = Integer.parseInt(ipAddressInArray[i]);
-				if(ip > 255) {
+				if (ip > 255) {
 					return false;
 				}
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 		return true;
 	}
-	
+
 	public static Long ipToLong(String ipAddress) {
-		if(!matchIpRegex(ipAddress)) {
+		if (!matchIpRegex(ipAddress)) {
 			return 0L;
 		}
-		
+
 		// ipAddressInArray[0] = 192
 		String[] ipAddressInArray = ipAddress.split("\\.");
 
@@ -106,12 +118,12 @@ public class NumericUtilCustom {
 
 		return result;
 	}
-	
+
 	public static long ipToLong2(String ipAddress) {
-		if(!matchIpRegex(ipAddress)) {
+		if (!matchIpRegex(ipAddress)) {
 			return 0L;
 		}
-		
+
 		long result = 0;
 
 		String[] ipAddressInArray = ipAddress.split("\\.");
@@ -132,13 +144,10 @@ public class NumericUtilCustom {
 
 		return result;
 	}
-	
+
 	public static String longToIp(long i) {
 
-		return ((i >> 24) & 0xFF) +
-                   "." + ((i >> 16) & 0xFF) +
-                   "." + ((i >> 8) & 0xFF) +
-                   "." + (i & 0xFF);
+		return ((i >> 24) & 0xFF) + "." + ((i >> 16) & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + (i & 0xFF);
 
 	}
 
@@ -167,5 +176,5 @@ public class NumericUtilCustom {
 
 		return sb.toString();
 	}
-	
+
 }

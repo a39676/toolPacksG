@@ -308,10 +308,12 @@ public class FileUtilCustom {
 		return bytes;
 	}
 
-	public void filesToZip(String outputZipPath, List<String> filePaths) {
+	public void filesToZip(String outputZipPath, List<String> filePaths) throws IOException {
+		FileOutputStream fos = null;
+		ZipOutputStream zos = null;
 		try {
-			FileOutputStream fos = new FileOutputStream(outputZipPath);
-			ZipOutputStream zos = new ZipOutputStream(fos);
+			fos = new FileOutputStream(outputZipPath);
+			zos = new ZipOutputStream(fos);
 			
 			for(String filePath : filePaths) {
 				addToZipFile(filePath, zos);
@@ -324,13 +326,22 @@ public class FileUtilCustom {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if(fos != null) {
+				fos.close();
+			}
+			if(zos != null) {
+				zos.close();
+			}
 		}
 	}
 	
-	public void fileToZip(String outputZipPath, String filePath) {
+	public void fileToZip(String outputZipPath, String filePath) throws IOException {
+		FileOutputStream fos = null;
+		ZipOutputStream zos = null;
 		try {
-			FileOutputStream fos = new FileOutputStream(outputZipPath);
-			ZipOutputStream zos = new ZipOutputStream(fos);
+			fos = new FileOutputStream(outputZipPath);
+			zos = new ZipOutputStream(fos);
 			
 			addToZipFile(filePath, zos);
 
@@ -341,14 +352,21 @@ public class FileUtilCustom {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if(fos != null) {
+				fos.close();
+			}
+			if(zos != null) {
+				zos.close();
+			}
 		}
 	}
 	
-	private void addToZipFile(String filePath, ZipOutputStream zos) {
+	private void addToZipFile(String filePath, ZipOutputStream zos) throws IOException {
 
+		FileInputStream fis = null;
 		try {
 			File file = new File(filePath);
-			FileInputStream fis;
 			fis = new FileInputStream(file);
 			ZipEntry zipEntry = new ZipEntry(file.getName());
 			zos.putNextEntry(zipEntry);
@@ -364,6 +382,9 @@ public class FileUtilCustom {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			zos.closeEntry();
+			fis.close();
 		}
 
 	}

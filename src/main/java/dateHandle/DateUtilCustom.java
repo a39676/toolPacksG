@@ -44,8 +44,12 @@ public abstract class DateUtilCustom {
 	}
 	
 	public static boolean isDateValid(String dateString) {
+		String dateFormat = determineDateFormat(dateString);
+		if(dateFormat == null) {
+			return false;
+		}
 	    try {
-	        DateFormat df = new SimpleDateFormat(determineDateFormat(dateString));
+	        DateFormat df = new SimpleDateFormat(dateFormat);
 	        df.setLenient(false);
 	        df.parse(dateString);
 	        return true;

@@ -24,9 +24,13 @@ import org.apache.commons.io.FileUtils;
 public class FileUtilCustom {
 
 	public String getStringFromFile(String filePath, String encodeType) {
+		FileInputStream fis = null;
+		InputStreamReader isr = null;
 
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), encodeType));
+			fis = new FileInputStream(filePath);
+			isr = new InputStreamReader(fis, encodeType);
+			BufferedReader br = new BufferedReader(isr);
 			StringBuffer sb = new StringBuffer();
 
 			String sCurrentLine = null;
@@ -40,7 +44,13 @@ public class FileUtilCustom {
 			e.printStackTrace();
 			return null;
 		} finally {
-
+			if(fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

@@ -21,8 +21,8 @@
 //	
 //	public static void main(String[] args) throws MessagingException {
 //		
-//		String userName = "q1254660171@sina.com";
-//		String password = "testsina";
+//		String userName = "@sina.com";
+//		String password = "";
 //		String sinaImapPropertiesPath = "D:\\wp02\\ssms\\src\\main\\resources\\properties\\email\\sinaImapSsl.properties";
 //		String sinaSmtpPropertiesPath = "D:\\wp02\\ssms\\src\\main\\resources\\properties\\email\\sinaSmtpSsl.properties";
 //		
@@ -68,14 +68,14 @@
 //				boolean flag = false;
 //				for(Address f : from) {
 //					System.out.println(f);
-////					Pattern pattern = Pattern.compile("(^18922315552@189.cn)");
+////					Pattern pattern = Pattern.compile("(^@189.cn)");
 ////				    Matcher matcher = pattern.matcher(f.toString());
 ////				    if (matcher.find()) {
-////				    	if(matcher.group(1).equals("18922315552@189.cn")) {
+////				    	if(matcher.group(1).equals("@189.cn")) {
 ////				    		flag = true;
 ////				    	}
 ////				    } 
-//					if(f.toString().equals("18922315552@189.cn")) {
+//					if(f.toString().equals("@189.cn")) {
 //						flag = true;
 //					}
 //				}
@@ -87,7 +87,7 @@
 //					MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
 //					String content = mimeMultipart.getBodyPart(0).getContent().toString();
 //					System.out.println(content);
-//					if(content.contains("456456456")) {
+//					if(content.contains("")) {
 //						return true;
 //					}
 //				} catch (MessagingException e) {

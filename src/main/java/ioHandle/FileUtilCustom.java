@@ -20,6 +20,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.zeroturnaround.zip.ZipUtil;
 
 public class FileUtilCustom {
 
@@ -372,6 +373,10 @@ public class FileUtilCustom {
 		}
 	}
 	
+	public void folderToZip(String outputZipPath, String filePath) throws IOException {
+		ZipUtil.pack(new File(filePath), new File(outputZipPath));
+	}
+	
 	private void addToZipFile(String filePath, ZipOutputStream zos) throws IOException {
 
 		FileInputStream fis = null;
@@ -398,4 +403,5 @@ public class FileUtilCustom {
 		}
 
 	}
+
 }

@@ -2,6 +2,13 @@ apply plugin: 'java-library'
 apply plugin: 'java'
 
 version = '0.0.3.2'
+// JDK version source compatibility
+compileJava {
+	sourceCompatibility = '1.8'
+	targetCompatibility = '1.8'
+}
+
+[compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
 
 //create a single Jar with all dependencies
 task fatJar(type: Jar) {

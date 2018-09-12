@@ -29,7 +29,7 @@ public class HttpUtil {
 	
 
 	// HTTP GET request
-	public String sendGet(String url, HashMap<String, String> keyValues) throws Exception {
+	public String sendGet(String url, HashMap<String, String> keyValues) throws IOException  {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -57,7 +57,7 @@ public class HttpUtil {
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
 		}
-		response.append(con.getResponseMessage());
+//		response.append(con.getResponseMessage());
 //		response.append(con.getHeaderFields());
 		in.close();
 
@@ -70,7 +70,7 @@ public class HttpUtil {
 	}
 
 	// HTTP POST request
-	public String sendPost(String url, String urlParameters) throws Exception {
+	public String sendPost(String url, String urlParameters) throws IOException  {
 //		String urlParameters = "{\"version\":\"2\", \"platform\":\"1\", \"status\":\"0\", \"des\":\"\"}";
 		HttpURLConnection con;
 		StringBuilder content;

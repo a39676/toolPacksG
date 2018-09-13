@@ -44,4 +44,5 @@ dependencies {
     compile files('src/libs/log4j-1.2.17.jar')
     compile files('src/libs/slf4j-api-1.7.21.jar')
     compile files('src/libs/slf4j-log4j12-1.7.21.jar')
+    compile files('src/libs/activation-1.1.jar')
 }

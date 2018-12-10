@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
@@ -104,6 +105,18 @@ public abstract class DateUtilCustom {
 	 */
 	public static Date localDateTimeToDate(LocalDateTime inputLocalDateTime) {
 		return Date.from(inputLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
+	}
+	
+	public static Date atStartOfDay(Date date) {
+	    LocalDateTime localDateTime = dateToLocalDateTime(date);
+	    LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
+	    return localDateTimeToDate(startOfDay);
+	}
+
+	public static Date atEndOfDay(Date date) {
+	    LocalDateTime localDateTime = dateToLocalDateTime(date);
+	    LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+	    return localDateTimeToDate(endOfDay);
 	}
 	
 	static {{

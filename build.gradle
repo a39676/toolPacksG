@@ -1,7 +1,7 @@
 apply plugin: 'java-library'
 apply plugin: 'java'
 
-version = '0.0.4.1'
+version = '0.0.4.2'
 // JDK version source compatibility
 compileJava {
 	sourceCompatibility = '1.8'
@@ -40,14 +40,20 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     
     // for office file
-    compile files('src/libs/poi-3.15.jar')
-    compile files('src/libs/poi-ooxml-3.15.jar')
-    compile files('src/libs/poi-ooxml-schemas-3.15.jar')
-    compile files('src/libs/commons-compress-1.18.jar')
-    compile files('src/libs/commons-collections4-4.1.jar')
-    compile files('src/libs/ooxml-schemas-1.4.jar')
-    compile files('src/libs/xmlbeans-2.6.0.jar')
-    
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+	compile group: 'org.apache.poi', name: 'poi', version: '3.15'
+	// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.15'
+	// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas
+	compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '3.15'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
+	compile group: 'org.apache.commons', name: 'commons-compress', version: '1.18'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
+	compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
+    // https://mvnrepository.com/artifact/org.apache.poi/ooxml-schemas
+	compile group: 'org.apache.poi', name: 'ooxml-schemas', version: '1.4'
+    // https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans
+	compile group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '2.6.0'
     
     
     compile files('src/libs/commons-beanutils-1.9.2.jar')

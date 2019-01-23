@@ -56,14 +56,23 @@ dependencies {
 	compile group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '2.6.0'
     
     
-    compile files('src/libs/commons-beanutils-1.9.2.jar')
-    compile files('src/libs/commons-collections-3.2.2.jar')
-    compile files('src/libs/commons-io-2.5.jar')
-    compile files('src/libs/commons-lang-2.6.jar')
-    compile files('src/libs/commons-logging-1.2.jar')
-    compile files('src/libs/ezmorph-1.0.6.jar')
-    compile files('src/libs/javax.mail-1.5.6.jar')
-    compile files('src/libs/json-lib-2.4-jdk15.jar')
+    // https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils
+	compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.2'
+    // https://mvnrepository.com/artifact/commons-collections/commons-collections
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+	compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    // https://mvnrepository.com/artifact/commons-lang/commons-lang
+	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+    // https://mvnrepository.com/artifact/commons-logging/commons-logging
+	compile group: 'commons-logging', name: 'commons-logging', version: '1.2'
+    // https://mvnrepository.com/artifact/net.sf.ezmorph/ezmorph
+	compile group: 'net.sf.ezmorph', name: 'ezmorph', version: '1.0.6'
+    // https://mvnrepository.com/artifact/com.sun.mail/javax.mail
+	compile group: 'com.sun.mail', name: 'javax.mail', version: '1.5.6'
+    // https://mvnrepository.com/artifact/net.sf.json-lib/json-lib
+	compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.4', classifier: 'jdk15'
+    
     compile files('src/libs/zt-zip-1.13.jar')
     compile files('src/libs/log4j-1.2.17.jar')
     compile files('src/libs/slf4j-api-1.7.21.jar')

@@ -1,5 +1,7 @@
 apply plugin: 'java-library'
 apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 version = '0.0.4.2'
 // JDK version source compatibility
@@ -23,12 +25,12 @@ task fatJar(type: Jar) {
 }
 
 repositories {
+	// google()
+    mavenCentral()
+    jcenter()
     flatDir {
         dirs 'src/libs/'
     }
-    google()
-    mavenCentral()
-    jcenter()
 }
 
 dependencies {

@@ -3,7 +3,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-version = '0.0.4.2'
+version = '0.0.4.3'
 compileJava {
 	sourceCompatibility = '1.8'
 	targetCompatibility = '1.8'

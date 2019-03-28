@@ -2,13 +2,16 @@ package numericHandel;
 
 import java.text.NumberFormat;
 
+import org.apache.commons.lang.StringUtils;
+
 public class NumericUtilCustom {
 
-	public static String simpleNumberRegex = "-?\\d+($|\\.?\\d+)";
-	public static String integerRegex = "-?\\d+";
-	public static String positiveIntegerRegex = "\\d+";
-	public static String decimalRegex = "-?\\d+\\.\\d+";
-	public static String ipRegex = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
+	public static final String simpleNumberRegex = "-?\\d+($|\\.?\\d+)";
+	public static final String integerRegex = "-?\\d+";
+	public static final String positiveIntegerRegex = "\\d+";
+	public static final String decimalRegex = "-?\\d+\\.\\d+";
+	public static final String ipRegex = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
+	public static final String mobileRegex = "^1[345789]\\d{9}$";
 
 	public static Number strToNumber(String numberStr) {
 
@@ -177,4 +180,11 @@ public class NumericUtilCustom {
 		return sb.toString();
 	}
 
+	public static boolean matchMobile(String str) {
+		if(StringUtils.isBlank(str)) {
+			return false;
+		}
+		
+		return str.matches(mobileRegex);
+	}
 }

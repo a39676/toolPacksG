@@ -119,7 +119,6 @@ public class HttpUtil {
 		return sendPost(url, null);
 	}
 	
-	
 	public void httpPostUploadFileDemo() throws MalformedURLException, IOException {
 
 		String url = "http://example.com/upload";

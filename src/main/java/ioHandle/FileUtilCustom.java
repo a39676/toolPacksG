@@ -11,6 +11,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -25,38 +30,22 @@ import org.zeroturnaround.zip.ZipUtil;
 public class FileUtilCustom {
 
 	public String getStringFromFile(String filePath, String encodeType) {
-		FileInputStream fis = null;
-		InputStreamReader isr = null;
+		Path path = Paths.get(filePath);
+		StringBuffer result = new StringBuffer();
+		try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName(encodeType))) {
 
-		try {
-			fis = new FileInputStream(filePath);
-			isr = new InputStreamReader(fis, encodeType);
-			BufferedReader br = new BufferedReader(isr);
-			StringBuffer sb = new StringBuffer();
-
-			String sCurrentLine = null;
-
-			while ((sCurrentLine = br.readLine()) != null) {
-				sb.append(sCurrentLine + "\n");
+			String currentLine = null;
+			while ((currentLine = reader.readLine()) != null) {// while there is content on the current line
+				result.append(currentLine);
 			}
-			br.close();
-			return sb.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			if(fis != null) {
-				try {
-					fis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+		} catch (IOException ex) {
+			ex.printStackTrace(); // handle an exception here
 		}
+		return result.toString();
 	}
 
 	public String getStringFromFile(String filePath) {
-		return getStringFromFile(filePath, "utf8");
+		return getStringFromFile(filePath, StandardCharsets.UTF_8.displayName());
 	}
 
 	public byte[] getByteFromFile(String path) throws Exception {
@@ -122,8 +111,7 @@ public class FileUtilCustom {
 	 * 
 	 * @param byteArray
 	 * @param filePath
-	 * @param appendFlag
-	 *            是否在末尾追加
+	 * @param appendFlag 是否在末尾追加
 	 */
 	public void byteToFile(byte[] byteArray, String filePath, boolean appendFlag) {
 		if (byteArray == null || byteArray.length <= 0) {
@@ -325,8 +313,8 @@ public class FileUtilCustom {
 		try {
 			fos = new FileOutputStream(outputZipPath);
 			zos = new ZipOutputStream(fos);
-			
-			for(String filePath : filePaths) {
+
+			for (String filePath : filePaths) {
 				addToZipFile(filePath, zos);
 			}
 
@@ -338,22 +326,22 @@ public class FileUtilCustom {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if(fos != null) {
+			if (fos != null) {
 				fos.close();
 			}
-			if(zos != null) {
+			if (zos != null) {
 				zos.close();
 			}
 		}
 	}
-	
+
 	public void fileToZip(String outputZipPath, String filePath) throws IOException {
 		FileOutputStream fos = null;
 		ZipOutputStream zos = null;
 		try {
 			fos = new FileOutputStream(outputZipPath);
 			zos = new ZipOutputStream(fos);
-			
+
 			addToZipFile(filePath, zos);
 
 			zos.close();
@@ -364,19 +352,19 @@ public class FileUtilCustom {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if(fos != null) {
+			if (fos != null) {
 				fos.close();
 			}
-			if(zos != null) {
+			if (zos != null) {
 				zos.close();
 			}
 		}
 	}
-	
+
 	public void folderToZip(String outputZipPath, String filePath) throws IOException {
 		ZipUtil.pack(new File(filePath), new File(outputZipPath));
 	}
-	
+
 	private void addToZipFile(String filePath, ZipOutputStream zos) throws IOException {
 
 		FileInputStream fis = null;

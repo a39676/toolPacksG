@@ -3,7 +3,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-version = '0.0.4.3'
+version = '1.0.1'
 compileJava {
 	sourceCompatibility = '1.8'
 	targetCompatibility = '1.8'
@@ -64,6 +64,5 @@ dependencies {
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
 	compile group: 'javax.activation', name: 'activation', version: '1.1.1'
 	
-    // compile files('src/libs/slf4j-log4j12-1.7.21.jar')
 
 }

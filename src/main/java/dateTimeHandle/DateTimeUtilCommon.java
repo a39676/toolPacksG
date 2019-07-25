@@ -8,9 +8,16 @@ import java.util.Map;
 
 public abstract class DateTimeUtilCommon {
 	
+	/** yyyy-MM-dd */
 	public static final String normalDateFormat = "yyyy-MM-dd";
-	public static final String normalTimeFormat = "yyyy-MM-dd";
+	/** HH:mm:ss */
+	public static final String normalTimeFormat = "HH:mm:ss";
+	/** yyyy-MM-dd HH:mm:ss */
 	public static final String normalDateTimeFormat = normalDateFormat + " " + normalTimeFormat;
+	/** yyyy-MM-ddTHH:mm:ss */
+	public static final String localDateTimeFormatLong = normalDateFormat + "T" + normalTimeFormat;
+	/** yyyy-MM-dd HH:mm */
+	public static final String localDateTimeFormatShort = normalDateFormat + " " + "HH:mm";
 
 	public static final Map<String, String> DATE_FORMAT_REGEXPS = new HashMap<String, String>() ;
 	

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -17,6 +18,8 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * http单元
  *
@@ -24,9 +27,16 @@ import java.util.Map;
 public class HttpUtil {
 
 	// private static final String USER_AGENT = "Mozilla/5.0";
-	private static final String USER_AGENT = "Fiddler";
-
-	
+//	private static final String USER_AGENT = "Fiddler";
+	private final String defaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36";
+	public final String get = "GET";
+	public final String post = "POST";
+	public final String put = "PUT";
+	public final String delete = "DELETE";
+	public final String head = "HEAD";
+	public final String patch = "PATCH";
+	public final String options = "OPTIONS";
+	public final String trace = "TRACE";
 
 	// HTTP GET request
 	public String sendGet(String url, HashMap<String, String> keyValues) throws IOException  {
@@ -35,10 +45,10 @@ public class HttpUtil {
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		// optional default is GET
-		con.setRequestMethod("GET");
+		con.setRequestMethod(get);
 
 		// add request header
-		con.setRequestProperty("User-Agent", USER_AGENT);
+		con.setRequestProperty("User-Agent", defaultUserAgent);
 
 		if (keyValues != null && keyValues.size() > 0) {
 			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
@@ -64,6 +74,64 @@ public class HttpUtil {
 		// print result
 		return response.toString();
 	}
+	
+	public InputStream sendRequestGetInputStreamReader(String httpMethod, String userAgent, String url, HashMap<String, String> keyValues) throws IOException  {
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		if(StringUtils.isBlank(httpMethod)) {
+			httpMethod = get;
+		}
+		con.setRequestMethod(httpMethod);
+
+		if(StringUtils.isBlank(userAgent)) {
+			con.setRequestProperty("User-Agent", defaultUserAgent);
+		} else {
+			con.setRequestProperty("User-Agent", userAgent);
+		}
+
+		if (keyValues != null && keyValues.size() > 0) {
+			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
+				con.setRequestProperty(entry.getKey(), entry.getValue());
+			}
+		}
+		
+		return con.getInputStream();
+	}
+	
+	public String sendRequest(String httpMethod, String userAgent, String url, HashMap<String, String> keyValues) throws IOException  {
+
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		con.setRequestMethod(httpMethod);
+
+		if(StringUtils.isBlank(userAgent)) {
+			con.setRequestProperty("User-Agent", defaultUserAgent);
+		} else {
+			con.setRequestProperty("User-Agent", userAgent);
+		}
+
+		if (keyValues != null && keyValues.size() > 0) {
+			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
+				con.setRequestProperty(entry.getKey(), entry.getValue());
+			}
+		}
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+	
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+		con.disconnect();
+	
+		return response.toString();
+
+	}
+	
 
 	public String sendGet(String url) throws Exception {
 		return sendGet(url, null);
@@ -72,7 +140,7 @@ public class HttpUtil {
 	// HTTP POST request
 	public String sendPost(String url, String urlParameters) throws IOException  {
 //		String urlParameters = "{\"version\":\"2\", \"platform\":\"1\", \"status\":\"0\", \"des\":\"\"}";
-		HttpURLConnection con;
+		HttpURLConnection con = null;
 		StringBuilder content;
 
         byte[] postData = null;
@@ -86,8 +154,8 @@ public class HttpUtil {
             con = (HttpURLConnection) myurl.openConnection();
 
             con.setDoOutput(true);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setRequestMethod(post);
+            con.setRequestProperty("User-Agent", defaultUserAgent);
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 //            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             
@@ -108,8 +176,9 @@ public class HttpUtil {
 
 
         } finally {
-            
-//            con.disconnect();
+            if(con != null) {
+            	con.disconnect();
+            }
         }
 		return content.toString();
 		

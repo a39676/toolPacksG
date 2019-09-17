@@ -32,8 +32,8 @@ public class FileUtilCustom {
 	public String getStringFromFile(String filePath, String encodeType) {
 		Path path = Paths.get(filePath);
 		StringBuffer result = new StringBuffer();
-		try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName(encodeType))) {
-
+		try {
+			BufferedReader reader = Files.newBufferedReader(path, Charset.forName(encodeType));
 			String currentLine = null;
 			while ((currentLine = reader.readLine()) != null) {// while there is content on the current line
 				result.append(currentLine);

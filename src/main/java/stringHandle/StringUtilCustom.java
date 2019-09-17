@@ -184,4 +184,10 @@ public class StringUtilCustom {
 		return sb.toString();
 	}
 	
+	public String getSuffixName(String str) {
+		if(StringUtils.isBlank(str)) {
+			return "";
+		}
+		return str.substring(str.lastIndexOf("."));
+	}
 }

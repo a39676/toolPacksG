@@ -49,6 +49,8 @@ public class HttpUtil {
 
 		// add request header
 		con.setRequestProperty("User-Agent", defaultUserAgent);
+		
+		
 
 		if (keyValues != null && keyValues.size() > 0) {
 			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
@@ -60,7 +62,7 @@ public class HttpUtil {
 		// System.out.println("\nSending 'GET' request to URL : " + url);
 		// System.out.println("Response Code : " + responseCode);
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 
@@ -118,7 +120,7 @@ public class HttpUtil {
 			}
 		}
 		
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 	

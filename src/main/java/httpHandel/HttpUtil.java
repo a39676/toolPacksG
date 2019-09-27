@@ -15,7 +15,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +38,7 @@ public class HttpUtil {
 	public final String trace = "TRACE";
 
 	// HTTP GET request
-	public String sendGet(String url, HashMap<String, String> keyValues) throws IOException  {
+	public String sendGet(String url, Map<String, String> keyValues) throws IOException  {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -77,7 +76,7 @@ public class HttpUtil {
 		return response.toString();
 	}
 	
-	public InputStream sendRequestGetInputStreamReader(String httpMethod, String userAgent, String url, HashMap<String, String> keyValues) throws IOException  {
+	public InputStream sendRequestGetInputStreamReader(String httpMethod, String userAgent, String url, Map<String, String> keyValues) throws IOException  {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -101,7 +100,7 @@ public class HttpUtil {
 		return con.getInputStream();
 	}
 	
-	public String sendRequest(String httpMethod, String userAgent, String url, HashMap<String, String> keyValues) throws IOException  {
+	public String sendRequest(String httpMethod, String userAgent, String url, Map<String, String> keyValues) throws IOException  {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -146,7 +145,7 @@ public class HttpUtil {
 		StringBuilder content;
 
         byte[] postData = null;
-        if(urlParameters != null && urlParameters.trim().length() >0) {
+        if(urlParameters != null && urlParameters.trim().length() > 0) {
         	postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         } 
         
@@ -160,6 +159,51 @@ public class HttpUtil {
             con.setRequestProperty("User-Agent", defaultUserAgent);
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 //            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            
+            if(postData != null) {
+            	DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            	wr.write(postData);
+            	wr.flush();
+            }
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String line;
+            content = new StringBuilder();
+
+            while ((line = in.readLine()) != null) {
+                content.append(line);
+                content.append(System.lineSeparator());
+            }
+
+
+        } finally {
+            if(con != null) {
+            	con.disconnect();
+            }
+        }
+		return content.toString();
+		
+	}
+	
+	public String sendPostRestful(String url, String jsonStr) throws IOException  {
+		HttpURLConnection con = null;
+		StringBuilder content;
+
+        byte[] postData = null;
+        if(jsonStr != null && jsonStr.trim().length() > 0) {
+        	postData = jsonStr.getBytes(StandardCharsets.UTF_8);
+        } 
+        
+        try {
+
+            URL myurl = new URL(url);
+            con = (HttpURLConnection) myurl.openConnection();
+
+            con.setDoOutput(true);
+            con.setRequestMethod(post);
+            con.setRequestProperty("User-Agent", defaultUserAgent);
+            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            con.setRequestProperty("Data-Type", "json; charset=UTF-8");
             
             if(postData != null) {
             	DataOutputStream wr = new DataOutputStream(con.getOutputStream());

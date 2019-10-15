@@ -36,7 +36,7 @@ public class FileUtilCustom {
 			BufferedReader reader = Files.newBufferedReader(path, Charset.forName(encodeType));
 			String currentLine = null;
 			while ((currentLine = reader.readLine()) != null) {// while there is content on the current line
-				result.append(currentLine);
+				result.append(currentLine + System.lineSeparator());
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace(); // handle an exception here

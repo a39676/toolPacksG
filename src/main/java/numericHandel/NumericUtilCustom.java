@@ -6,14 +6,14 @@ import org.apache.commons.lang.StringUtils;
 
 public class NumericUtilCustom {
 
-	public static final String simpleNumberRegex = "-?\\d+($|\\.?\\d+)";
-	public static final String integerRegex = "-?\\d+";
-	public static final String positiveIntegerRegex = "\\d+";
-	public static final String decimalRegex = "-?\\d+\\.\\d+";
-	public static final String ipRegex = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
-	public static final String mobileRegex = "^1[345789]\\d{9}$";
+	public final String SIMPLE_NUMBER_REGEX = "-?\\d+($|\\.?\\d+)";
+	public final String INTEGER_REGEX = "-?\\d+";
+	public final String POSITIVE_INTEGER_REGEX = "\\d+";
+	public final String DCIMALl_REGEX = "-?\\d+\\.\\d+";
+	public final String IP_REGEX = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
+	public final String MOBILE_REGEX = "^1[345789]\\d{9}$";
 
-	public static Number strToNumber(String numberStr) {
+	public Number strToNumber(String numberStr) {
 
 		if (matchSimpleNumber(numberStr)) {
 			System.out.println("not a simple number");
@@ -32,35 +32,35 @@ public class NumericUtilCustom {
 		return num;
 	}
 
-	public static boolean matchSimpleNumber(String numberStr) {
+	public boolean matchSimpleNumber(String numberStr) {
 		if (isEmpty(numberStr)) {
 			return false;
 		}
 		return numberStr.matches(numberStr);
 	}
 
-	public static boolean matchInteger(String numberStr) {
+	public boolean matchInteger(String numberStr) {
 		if (isEmpty(numberStr)) {
 			return false;
 		}
-		return numberStr.matches(integerRegex);
+		return numberStr.matches(INTEGER_REGEX);
 	}
 
-	public static boolean matchPositiveInteger(String numberStr) {
+	public boolean matchPositiveInteger(String numberStr) {
 		if (isEmpty(numberStr)) {
 			return false;
 		}
-		return numberStr.matches(positiveIntegerRegex);
+		return numberStr.matches(POSITIVE_INTEGER_REGEX);
 	}
 
-	public static boolean matchDecimal(String numberStr) {
+	public boolean matchDecimal(String numberStr) {
 		if (isEmpty(numberStr)) {
 			return false;
 		}
-		return numberStr.matches(decimalRegex);
+		return numberStr.matches(DCIMALl_REGEX);
 	}
 
-	private static boolean isEmpty(String str) {
+	private boolean isEmpty(String str) {
 		int strLen;
 		if (str == null || (strLen = str.length()) == 0) {
 			return true;
@@ -73,7 +73,7 @@ public class NumericUtilCustom {
 		return true;
 	}
 
-	public static boolean matchIpRegex(String ipAddress) {
+	public boolean matchIpRegex(String ipAddress) {
 		if(isEmpty(ipAddress)) {
 			return false;
 		}
@@ -99,7 +99,7 @@ public class NumericUtilCustom {
 		return true;
 	}
 
-	public static Long ipToLong(String ipAddress) {
+	public Long ipToLong(String ipAddress) {
 		if (!matchIpRegex(ipAddress)) {
 			return 0L;
 		}
@@ -122,7 +122,7 @@ public class NumericUtilCustom {
 		return result;
 	}
 
-	public static long ipToLong2(String ipAddress) {
+	public long ipToLong2(String ipAddress) {
 		if (!matchIpRegex(ipAddress)) {
 			return 0L;
 		}
@@ -148,13 +148,13 @@ public class NumericUtilCustom {
 		return result;
 	}
 
-	public static String longToIp(long i) {
+	public String longToIp(long i) {
 
 		return ((i >> 24) & 0xFF) + "." + ((i >> 16) & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + (i & 0xFF);
 
 	}
 
-	public static String longToIp2(long ip) {
+	public String longToIp2(long ip) {
 		StringBuilder sb = new StringBuilder(15);
 
 		for (int i = 0; i < 4; i++) {
@@ -180,11 +180,11 @@ public class NumericUtilCustom {
 		return sb.toString();
 	}
 
-	public static boolean matchMobile(String str) {
+	public boolean matchMobile(String str) {
 		if(StringUtils.isBlank(str)) {
 			return false;
 		}
 		
-		return str.matches(mobileRegex);
+		return str.matches(MOBILE_REGEX);
 	}
 }

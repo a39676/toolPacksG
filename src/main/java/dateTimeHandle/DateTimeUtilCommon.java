@@ -18,6 +18,8 @@ public abstract class DateTimeUtilCommon {
 	public static final String localDateTimeFormatLong = normalDateFormat + "T" + normalTimeFormat;
 	/** yyyy-MM-dd HH:mm */
 	public static final String localDateTimeFormatShort = normalDateFormat + " " + "HH:mm";
+	/** yyyyMMddHHmmss */
+	public static final String dateTimeFormatNoSymbol = "yyyyMMddHHmmss";
 
 	public static final Map<String, String> DATE_FORMAT_REGEXPS = new HashMap<String, String>() ;
 	

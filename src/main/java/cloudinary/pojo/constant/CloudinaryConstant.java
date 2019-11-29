@@ -11,5 +11,10 @@ public class CloudinaryConstant {
 	public static final String cloudinaryApiSecretStoreKey = "cloudinaryApiSecret";
 	
 	public static final long maxSize = 10485760L;
+	/**
+	 * 2019-11-29
+	 * 批量删除接口, 每次最多容纳100个id
+	 */
+	public static final int deleteIdListMaxSize = 100;
 
 }

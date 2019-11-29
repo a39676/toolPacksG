@@ -41,12 +41,13 @@ public class CloudinaryFunction {
 	 * 
 	 * @param cloudinary
 	 * @param publicIds max size 100
+	 * {@link CloudinaryConstant} deleteIdListMaxSize
 	 * @return
 	 */
 	public CloudinaryDeleteResult delete(Cloudinary cloudinary, List<String> publicIds) {
 
 		CloudinaryDeleteResult result = new CloudinaryDeleteResult();
-		if(publicIds.size() > 100) {
+		if(publicIds.size() > CloudinaryConstant.deleteIdListMaxSize) {
 			return result;
 		}
 

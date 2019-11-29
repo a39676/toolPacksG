@@ -37,9 +37,18 @@ public class CloudinaryFunction {
 		return delete(cloudinary, Arrays.asList(publicId));
 	}
 	
+	/**
+	 * 
+	 * @param cloudinary
+	 * @param publicIds max size 100
+	 * @return
+	 */
 	public CloudinaryDeleteResult delete(Cloudinary cloudinary, List<String> publicIds) {
 
 		CloudinaryDeleteResult result = new CloudinaryDeleteResult();
+		if(publicIds.size() > 100) {
+			return result;
+		}
 
 		JSONObject resultJson = null;
 		try {

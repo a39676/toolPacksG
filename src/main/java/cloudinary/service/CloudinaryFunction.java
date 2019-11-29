@@ -73,7 +73,7 @@ public class CloudinaryFunction {
 	
 	private CloudinaryDeleteResult buildDeleteResult(JSONObject j) {
 		CloudinaryDeleteResult r = new CloudinaryDeleteResult();
-		r.setDeleted(j.getJSONArray("deleted"));
+		r.setDeleted(j.getJSONObject("deleted"));
 		r.setPartial(j.getBoolean("partial"));
 		return r;
 	}

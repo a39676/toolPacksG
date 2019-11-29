@@ -1,18 +1,23 @@
 package cloudinary.pojo.result;
 
-import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class CloudinaryDeleteResult {
 
-	private JSONArray deleted;
+	/*
+	 * result example
+	 * {"deleted":{"t56vqlj7596gbsjliflp":"not_found","jkgl8hinpvdgvqyb7xs1":"deleted"},"deleted_counts":{"t56vqlj7596gbsjliflp":{"original":0,"derived":0},"jkgl8hinpvdgvqyb7xs1":{"original":1,"derived":0}},"partial":false}
+	 */
+	private JSONObject deleted;
 	private boolean partial = false;
 
-	public JSONArray getDeleted() {
+
+	public JSONObject getDeleted() {
 		return deleted;
 	}
 
-	public void setDeleted(JSONArray jsonArray) {
-		this.deleted = jsonArray;
+	public void setDeleted(JSONObject deleted) {
+		this.deleted = deleted;
 	}
 
 	public boolean isPartial() {
@@ -25,7 +30,7 @@ public class CloudinaryDeleteResult {
 
 	@Override
 	public String toString() {
-		return "CloudinaryDeleteResult [deleted=" + deleted + ", partial=" + partial + "]";
+		return "CloudinaryDeleteResult [partial=" + partial + "]";
 	}
 
 }

@@ -23,7 +23,7 @@ public abstract class DateTimeUtilCommon {
 
 	public static final Map<String, String> DATE_FORMAT_REGEXPS = new HashMap<String, String>() ;
 	
-	public static String determineDateFormat(String dateString) {
+	public String determineDateFormat(String dateString) {
 	    for (String regexp : DATE_FORMAT_REGEXPS.keySet()) {
 	        if (dateString.toLowerCase().matches(regexp)) {
 	            return DATE_FORMAT_REGEXPS.get(regexp);
@@ -37,7 +37,7 @@ public abstract class DateTimeUtilCommon {
 	 * @param dateInput
 	 * @return
 	 */
-	public static LocalDateTime dateToLocalDateTime(Date dateInput) {
+	public LocalDateTime dateToLocalDateTime(Date dateInput) {
 		if(dateInput != null) {
 			return LocalDateTime.ofInstant(dateInput.toInstant(), ZoneId.systemDefault());
 		} else {
@@ -50,7 +50,7 @@ public abstract class DateTimeUtilCommon {
 	 * @param inputLocalDateTime
 	 * @return
 	 */
-	public static Date localDateTimeToDate(LocalDateTime inputLocalDateTime) {
+	public Date localDateTimeToDate(LocalDateTime inputLocalDateTime) {
 		return Date.from(inputLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
 	}
 	

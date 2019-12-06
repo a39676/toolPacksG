@@ -8,9 +8,9 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
-public abstract class DateUtilCustom extends DateTimeUtilCommon {
+public class DateHandler extends DateTimeUtilCommon {
 	
-	public static Date stringToDateUnkonwFormat(String dateString) {
+	public Date stringToDateUnkonwFormat(String dateString) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(determineDateFormat(dateString));
 		
 		Date dateOutput = null;
@@ -22,7 +22,7 @@ public abstract class DateUtilCustom extends DateTimeUtilCommon {
 		}
 	}
 	
-	public static boolean isNormalDate(String dateString) {
+	public boolean isNormalDate(String dateString) {
 		if (determineDateFormat(dateString) == null) {
 			return false; 
 		} else {
@@ -30,7 +30,7 @@ public abstract class DateUtilCustom extends DateTimeUtilCommon {
 		}
 	}
 	
-	public static boolean isDateValid(String dateString) {
+	public boolean isDateValid(String dateString) {
 		String dateFormat = determineDateFormat(dateString);
 		if(dateFormat == null) {
 			return false;
@@ -45,7 +45,7 @@ public abstract class DateUtilCustom extends DateTimeUtilCommon {
 	    }
 	}
 	
-	public static Date dateDiffMonths(Date date, Integer manyMonths) {
+	public Date dateDiffMonths(Date date, Integer manyMonths) {
 		Calendar calendar = Calendar.getInstance();
 		if (date != null) {
 			calendar.setTime(date);
@@ -54,11 +54,11 @@ public abstract class DateUtilCustom extends DateTimeUtilCommon {
 		return calendar.getTime();
 	}
 	
-	public static Date dateDiffMonths(Integer manyMonths) {
+	public Date dateDiffMonths(Integer manyMonths) {
 		return dateDiffMonths(new Date(), manyMonths);
 	}
 	
-	public static Date dateDiffDays(Date date, Integer days) {
+	public Date dateDiffDays(Date date, Integer days) {
 		Calendar calendar = Calendar.getInstance();
 		if (date != null) {
 			calendar.setTime(date);
@@ -67,17 +67,17 @@ public abstract class DateUtilCustom extends DateTimeUtilCommon {
 		return calendar.getTime();
 	}
 	
-	public static Date dateDiffDays(Integer days) {
+	public Date dateDiffDays(Integer days) {
 		return dateDiffDays(new Date(), days);
 	}
 	
-	public static Date atStartOfDay(Date date) {
+	public Date atStartOfDay(Date date) {
 	    LocalDateTime localDateTime = dateToLocalDateTime(date);
 	    LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
 	    return localDateTimeToDate(startOfDay);
 	}
 
-	public static Date atEndOfDay(Date date) {
+	public Date atEndOfDay(Date date) {
 	    LocalDateTime localDateTime = dateToLocalDateTime(date);
 	    LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
 	    return localDateTimeToDate(endOfDay);

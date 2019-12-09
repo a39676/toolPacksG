@@ -32,7 +32,6 @@ repositories {
 }
 
 dependencies {
-    
     // for office file
 	compile group: 'org.apache.poi', name: 'poi', version: '3.15'
 	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.15'

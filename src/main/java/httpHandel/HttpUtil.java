@@ -187,7 +187,7 @@ public class HttpUtil {
 	
 	public String sendPostRestful(String url, String jsonStr) throws IOException  {
 		HttpURLConnection con = null;
-		StringBuilder content;
+		StringBuilder content = new StringBuilder();
 
         byte[] postData = null;
         if(jsonStr != null && jsonStr.trim().length() > 0) {
@@ -213,13 +213,13 @@ public class HttpUtil {
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String line;
-            content = new StringBuilder();
 
             while ((line = in.readLine()) != null) {
                 content.append(line);
                 content.append(System.lineSeparator());
             }
-
+        } catch (Exception e) {
+			e.printStackTrace();
 
         } finally {
             if(con != null) {

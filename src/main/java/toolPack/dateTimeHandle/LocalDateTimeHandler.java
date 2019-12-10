@@ -17,6 +17,9 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	}
 
 	public String dateToStr(LocalDateTime date, String format) {
+		if(date == null) {
+			return null;
+		}
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		String formatDateTime = date.format(formatter);
 		return formatDateTime;
@@ -66,4 +69,5 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		}
 		return ldt;
 	}
+
 }

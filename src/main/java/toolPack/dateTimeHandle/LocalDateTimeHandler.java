@@ -52,7 +52,7 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
     	}
 	 * @return 
 	 */
-	public LocalDateTime localDateTimeStrToLocalDateTime(String localDateTimeStr) {
+	public LocalDateTime localDateTimeJsonStrToLocalDateTime(String localDateTimeStr) {
 		LocalDateTime ldt = null;
 		try {
 			JSONObject j = JSONObject.fromObject(localDateTimeStr);
@@ -68,6 +68,19 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 			return null;
 		}
 		return ldt;
+	}
+	
+	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString) {
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(determineDateFormat(dateString));
+		
+		if(dateFormat != null) {
+			try {
+				return LocalDateTime.parse(dateString, dateFormat);
+			} catch (Exception e) {
+				return null;
+			}
+		}
+		return null;
 	}
 
 }

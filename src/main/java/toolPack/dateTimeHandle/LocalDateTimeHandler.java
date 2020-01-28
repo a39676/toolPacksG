@@ -1,5 +1,6 @@
 package toolPack.dateTimeHandle;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -77,7 +78,11 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 			try {
 				return LocalDateTime.parse(dateString, dateFormat);
 			} catch (Exception e) {
-				return null;
+				try {
+					return LocalDate.parse(dateString, dateFormat).atStartOfDay();
+				} catch (Exception e2) {
+					return null;
+				}
 			}
 		}
 		return null;

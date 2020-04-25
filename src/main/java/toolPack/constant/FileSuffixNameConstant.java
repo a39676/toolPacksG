@@ -11,6 +11,8 @@ public class FileSuffixNameConstant {
 	public static final String png = "png";
 	public static final String bmp = "bmp";
 	public static final String tif = "tif";
+	public static final String webp = "webp";
+	public static final String webm = "webm";
 
 	public static final String txt = "txt";
 	public static final String doc = "doc";
@@ -25,7 +27,7 @@ public class FileSuffixNameConstant {
 	public static final List<String> documentSuffix = new ArrayList<String>();
 
 	static {
-		imageSuffix.addAll(Arrays.asList(jpeg, jpeg, bmp, tif));
+		imageSuffix.addAll(Arrays.asList(jpeg, jpeg, bmp, tif, webp, webm));
 		documentSuffix.addAll(Arrays.asList(txt, doc, docx, ppt, xlsx, xls, csv, pdf));
 	}
 	

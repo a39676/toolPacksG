@@ -145,7 +145,7 @@ public class HttpUtil {
 		StringBuilder content;
 
         byte[] postData = null;
-        if(urlParameters != null && urlParameters.trim().length() > 0) {
+        if(StringUtils.isNotBlank(urlParameters)) {
         	postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         } 
         

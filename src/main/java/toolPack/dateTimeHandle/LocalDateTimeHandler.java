@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import net.sf.json.JSONObject;
 
@@ -17,17 +18,20 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		return date.with(LocalTime.MAX);
 	}
 
-	public String dateToStr(LocalDateTime date, String format) {
+	public String dateToStr(LocalDateTime date, String format, Locale locale) {
 		if(date == null) {
 			return null;
 		}
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		if(locale == null) {
+			locale = Locale.US;
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, locale);
 		String formatDateTime = date.format(formatter);
 		return formatDateTime;
 	}
 	
 	public String dateToStr(LocalDateTime date) {
-		return dateToStr(date, DateTimeUtilCommon.normalDateTimeFormat);
+		return dateToStr(date, DateTimeUtilCommon.normalDateTimeFormat, null);
 	}
 	
 	/**
@@ -72,7 +76,14 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	}
 	
 	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString) {
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(determineDateFormat(dateString));
+		return stringToLocalDateTimeUnkonwFormat(dateString, null);
+	}
+	
+	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString, Locale locale) {
+		if(locale == null) {
+			locale = Locale.US;
+		}
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(determineDateFormat(dateString), locale);
 		
 		if(dateFormat != null) {
 			try {

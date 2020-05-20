@@ -7,11 +7,19 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateHandler extends DateTimeUtilCommon {
 	
 	public Date stringToDateUnkonwFormat(String dateString) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(determineDateFormat(dateString));
+		return stringToDateUnkonwFormat(dateString, null);
+	}
+	
+	public Date stringToDateUnkonwFormat(String dateString, Locale locale) {
+		if(locale == null) {
+			locale = Locale.US;
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat(determineDateFormat(dateString), locale);
 		
 		Date dateOutput = null;
 		try {

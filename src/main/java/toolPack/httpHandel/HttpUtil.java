@@ -142,7 +142,7 @@ public class HttpUtil {
 	public String sendPost(String url, String urlParameters) throws IOException  {
 //		String urlParameters = "{\"version\":\"2\", \"platform\":\"1\", \"status\":\"0\", \"des\":\"\"}";
 		HttpURLConnection con = null;
-		StringBuilder content;
+		StringBuilder response = new StringBuilder();;
 
         byte[] postData = null;
         if(StringUtils.isNotBlank(urlParameters)) {
@@ -168,11 +168,10 @@ public class HttpUtil {
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String line;
-            content = new StringBuilder();
 
             while ((line = in.readLine()) != null) {
-                content.append(line);
-                content.append(System.lineSeparator());
+                response.append(line);
+                response.append(System.lineSeparator());
             }
 
 
@@ -181,7 +180,7 @@ public class HttpUtil {
             	con.disconnect();
             }
         }
-		return content.toString();
+		return response.toString();
 		
 	}
 	

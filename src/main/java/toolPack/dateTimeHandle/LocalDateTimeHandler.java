@@ -34,6 +34,10 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		return dateToStr(date, DateTimeUtilCommon.normalDateTimeFormat, null);
 	}
 	
+	public String dateToStr(LocalDateTime date, String format) {
+		return dateToStr(date, format, null);
+	}
+	
 	/**
 	 * 下策
 	 * LocalDateTime 转换至 json 默认的字符串输出比较特别, 因日常需求, 新建此方法

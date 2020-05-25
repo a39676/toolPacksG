@@ -122,7 +122,9 @@ public class FileUtilCustom {
 		File paraentFolder = file.getParentFile();
 
 		if (!paraentFolder.exists()) {
-			paraentFolder.mkdirs();
+			if(!paraentFolder.mkdirs()) {
+				return;
+			}
 		}
 
 		if (!file.exists()) {

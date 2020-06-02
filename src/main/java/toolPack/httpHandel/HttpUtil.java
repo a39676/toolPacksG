@@ -15,7 +15,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -36,20 +38,29 @@ public class HttpUtil {
 	public final String patch = "PATCH";
 	public final String options = "OPTIONS";
 	public final String trace = "TRACE";
+	
+	public Map<String, String> builddefaultRequestPropertyMap() {
+		Map<String, String> defaultRequestPropertyMap = new HashMap<String, String>();
+		defaultRequestPropertyMap.put("User-Agent", defaultUserAgent);
+        defaultRequestPropertyMap.put("Content-Type", "application/x-www-form-urlencoded charset=UTF-8");
+        
+        return defaultRequestPropertyMap;
+	}
 
-	// HTTP GET request
-	public String sendGet(String url, Map<String, String> keyValues) throws IOException  {
-
+	public String sendGet(String url, Map<String, String> keyValues, Map<String, String> requestPropertyMap) throws IOException  {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		// optional default is GET
 		con.setRequestMethod(get);
 
-		// add request header
-		con.setRequestProperty("User-Agent", defaultUserAgent);
+		if(requestPropertyMap == null) {
+			requestPropertyMap = builddefaultRequestPropertyMap();
+		}
 		
-		
+		for(Entry<String, String> entry : requestPropertyMap.entrySet()) {
+			con.setRequestProperty(entry.getKey(), entry.getValue());
+		}
 
 		if (keyValues != null && keyValues.size() > 0) {
 			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
@@ -74,6 +85,10 @@ public class HttpUtil {
 
 		// print result
 		return response.toString();
+	}
+	
+	public String sendGet(String url, Map<String, String> keyValues) throws IOException  {
+		return sendGet(url, keyValues, null);
 	}
 	
 	public InputStream sendRequestGetInputStreamReader(String httpMethod, String userAgent, String url, Map<String, String> keyValues) throws IOException  {
@@ -138,11 +153,10 @@ public class HttpUtil {
 		return sendGet(url, null);
 	}
 
-	// HTTP POST request
-	public String sendPost(String url, String urlParameters) throws IOException  {
+	public String sendPost(String url, String urlParameters, Map<String, String> requestPropertyMap) throws IOException  {
 //		String urlParameters = "{\"version\":\"2\", \"platform\":\"1\", \"status\":\"0\", \"des\":\"\"}";
 		HttpURLConnection con = null;
-		StringBuilder response = new StringBuilder();;
+		StringBuilder response = new StringBuilder();
 
         byte[] postData = null;
         if(StringUtils.isNotBlank(urlParameters)) {
@@ -156,9 +170,14 @@ public class HttpUtil {
 
             con.setDoOutput(true);
             con.setRequestMethod(post);
-            con.setRequestProperty("User-Agent", defaultUserAgent);
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            
+            if(requestPropertyMap == null) {
+    			requestPropertyMap = builddefaultRequestPropertyMap();
+    		}
+    		
+    		for(Entry<String, String> entry : requestPropertyMap.entrySet()) {
+    			con.setRequestProperty(entry.getKey(), entry.getValue());
+    		}
             
             if(postData != null) {
             	DataOutputStream wr = new DataOutputStream(con.getOutputStream());
@@ -185,58 +204,25 @@ public class HttpUtil {
 	}
 	
 	public String sendPostRestful(String url, String jsonStr) throws IOException  {
-		HttpURLConnection con = null;
-		StringBuilder content = new StringBuilder();
-
-        byte[] postData = null;
-        if(jsonStr != null && jsonStr.trim().length() > 0) {
-        	postData = jsonStr.getBytes(StandardCharsets.UTF_8);
-        } 
-        
-        try {
-
-            URL myurl = new URL(url);
-            con = (HttpURLConnection) myurl.openConnection();
-
-            con.setDoOutput(true);
-            con.setRequestMethod(post);
-            con.setRequestProperty("User-Agent", defaultUserAgent);
-            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            con.setRequestProperty("Data-Type", "json; charset=UTF-8");
-            
-            if(postData != null) {
-            	DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            	wr.write(postData);
-            	wr.flush();
-            }
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String line;
-
-            while ((line = in.readLine()) != null) {
-                content.append(line);
-                content.append(System.lineSeparator());
-            }
-        } catch (Exception e) {
-			e.printStackTrace();
-
-        } finally {
-            if(con != null) {
-            	con.disconnect();
-            }
-        }
-		return content.toString();
+		Map<String, String> requestPropertyMap = builddefaultRequestPropertyMap();
+		requestPropertyMap.put("Content-Type", "application/json; charset=UTF-8");
+		requestPropertyMap.put("Data-Type", "json; charset=UTF-8");
 		
+		return sendPost(url, jsonStr, requestPropertyMap);
 	}
 
 	public String sendPost(String url) throws Exception {
-		return sendPost(url, null);
+		return sendPost(url, null, null);
+	}
+	
+	public String sendPost(String url, String params) throws Exception {
+		return sendPost(url, params, null);
 	}
 	
 	public void httpPostUploadFileDemo() throws MalformedURLException, IOException {
 
 		String url = "http://example.com/upload";
-		String charset = "UTF-8";
+		String charset = StandardCharsets.UTF_8.displayName();
 		String param = "value";
 		File textFile = new File("/path/to/file.txt");
 		File binaryFile = new File("/path/to/file.bin");

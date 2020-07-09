@@ -138,7 +138,7 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		int monthValue = date.getMonthValue();
 		if (monthValue > 11 || monthValue < 3) {
 			return true;
-		} else if (monthValue < 11 || monthValue > 3) {
+		} else if (monthValue < 11 && monthValue > 3) {
 			return false;
 		} else if (monthValue == 11) {
 			LocalDate winterTimeStart = findTheXWeekdayOfTheMonth(date, 7, 1);

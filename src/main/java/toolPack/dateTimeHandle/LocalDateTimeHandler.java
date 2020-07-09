@@ -85,12 +85,12 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		return null;
 	}
 
-	public LocalDate findTheXWeekdayOfTheMonth(LocalDate date, int weekdayValue, int targetIndex) {
+	public LocalDate findTheXWeekdayOfTheMonth(LocalDate date, int weekdayValue, int targetWeekCount) {
 		if (date == null) {
 			return null;
 		}
 
-		if (targetIndex < 1 || targetIndex > 5) {
+		if (targetWeekCount < 1 || targetWeekCount > 5) {
 			return null;
 		}
 
@@ -103,21 +103,20 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 
 		LocalDate tmpDay = firstDay;
 		boolean matchWeekDay = false;
-		int tmpIndex = 1;
+		int weekCounting = 1;
 		int stepLong = 1;
 
-		for (; (tmpDay.isBefore(lastDay) || tmpDay.isEqual(lastDay))
-				&& tmpIndex <= targetIndex;) {
-			if(tmpDay.getDayOfWeek().getValue() == weekdayValue) {
+		for (; (tmpDay.isBefore(lastDay) || tmpDay.isEqual(lastDay)) && weekCounting <= targetWeekCount;) {
+			if (tmpDay.getDayOfWeek().getValue() == weekdayValue) {
 				stepLong = 7;
 				matchWeekDay = true;
-				if(targetIndex == tmpIndex) {
+				if (targetWeekCount == weekCounting) {
 					return tmpDay;
 				}
 			}
 			tmpDay = tmpDay.plusDays(stepLong);
-			if(matchWeekDay) {
-				tmpIndex += 1;
+			if (matchWeekDay) {
+				weekCounting += 1;
 			}
 		}
 
@@ -129,6 +128,31 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 			return null;
 		}
 		return date.with(TemporalAdjusters.lastDayOfMonth());
+	}
+
+	public boolean isUSWinterTime(LocalDate date) {
+		if (date == null) {
+			return false;
+		}
+
+		int monthValue = date.getMonthValue();
+		if (monthValue > 11 || monthValue < 3) {
+			return true;
+		} else if (monthValue < 11 || monthValue > 3) {
+			return false;
+		} else if (monthValue == 11) {
+			LocalDate winterTimeStart = findTheXWeekdayOfTheMonth(date, 7, 1);
+			return !date.isBefore(winterTimeStart);
+		} else if (monthValue == 3) {
+			LocalDate winterTimeEnd = findTheXWeekdayOfTheMonth(date, 7, 2);
+			return !date.isAfter(winterTimeEnd);
+		}
+		
+		return false;
+	}
+	
+	public boolean isUSWinterTime() {
+		return isUSWinterTime(LocalDate.now());
 	}
 	
 }

@@ -130,22 +130,25 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		return date.with(TemporalAdjusters.lastDayOfMonth());
 	}
 
-	public boolean isUSWinterTime(LocalDate date) {
-		if (date == null) {
+	/**
+	 * please input US date
+	 */
+	public boolean isUSWinterTime(LocalDate usDate) {
+		if (usDate == null) {
 			return false;
 		}
 
-		int monthValue = date.getMonthValue();
+		int monthValue = usDate.getMonthValue();
 		if (monthValue > 11 || monthValue < 3) {
 			return true;
 		} else if (monthValue < 11 && monthValue > 3) {
 			return false;
 		} else if (monthValue == 11) {
-			LocalDate winterTimeStart = findTheXWeekdayOfTheMonth(date, 7, 1);
-			return !date.isBefore(winterTimeStart);
+			LocalDate winterTimeStart = findTheXWeekdayOfTheMonth(usDate, 7, 1);
+			return !usDate.isBefore(winterTimeStart);
 		} else if (monthValue == 3) {
-			LocalDate winterTimeEnd = findTheXWeekdayOfTheMonth(date, 7, 2);
-			return !date.isAfter(winterTimeEnd);
+			LocalDate winterTimeEnd = findTheXWeekdayOfTheMonth(usDate, 7, 2);
+			return !usDate.isAfter(winterTimeEnd);
 		}
 		
 		return false;

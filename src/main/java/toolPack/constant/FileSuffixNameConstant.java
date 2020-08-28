@@ -6,32 +6,32 @@ import java.util.List;
 
 public class FileSuffixNameConstant {
 
-	public static final String jpg = "jpg";
-	public static final String jpeg = "jpeg";
-	public static final String png = "png";
-	public static final String bmp = "bmp";
-	public static final String tif = "tif";
-	public static final String webp = "webp";
-	public static final String webm = "webm";
+	public static final String JPG = "jpg";
+	public static final String JPEG = "jpeg";
+	public static final String PNG = "png";
+	public static final String BMP = "bmp";
+	public static final String TIF = "tif";
+	public static final String WEBP = "webp";
+	public static final String WEBM = "webm";
 
-	public static final String txt = "txt";
-	public static final String doc = "doc";
-	public static final String docx = "docx";
-	public static final String ppt = "ppt";
-	public static final String xlsx = "xlsx";
-	public static final String xls = "xls";
-	public static final String csv = "csv";
-	public static final String pdf = "pdf";
+	public static final String TXT = "txt";
+	public static final String DOC = "doc";
+	public static final String DOCX = "docx";
+	public static final String PPT = "ppt";
+	public static final String XLSX = "xlsx";
+	public static final String XLS = "xls";
+	public static final String CSV = "csv";
+	public static final String PDF = "pdf";
 
-	public static final List<String> imageSuffix = new ArrayList<String>();
-	public static final List<String> documentSuffix = new ArrayList<String>();
+	public static final List<String> IMAGE_SUFFIX = new ArrayList<String>();
+	public static final List<String> DOCUMENT_SUFFIX = new ArrayList<String>();
 
 	static {
-		imageSuffix.addAll(Arrays.asList(jpeg, jpeg, bmp, tif, webp, webm));
-		documentSuffix.addAll(Arrays.asList(txt, doc, docx, ppt, xlsx, xls, csv, pdf));
+		IMAGE_SUFFIX.addAll(Arrays.asList(JPEG, JPEG, PNG, BMP, TIF, WEBP, WEBM));
+		DOCUMENT_SUFFIX.addAll(Arrays.asList(TXT, DOC, DOCX, PPT, XLSX, XLS, CSV, PDF));
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(documentSuffix);
+		System.out.println(DOCUMENT_SUFFIX);
 	}
 }

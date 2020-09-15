@@ -184,10 +184,29 @@ public class StringUtilCustom {
 		return sb.toString();
 	}
 	
-	public String getSuffixName(String str) {
+	public String getFileSuffixName(String str) {
 		if(StringUtils.isBlank(str)) {
 			return "";
 		}
 		return str.substring(str.lastIndexOf("."));
 	}
+	
+	public final char[] ILLEGAL_FILE_CHARACTERS = {' ', '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':' };
+	
+	public boolean filenameHasIllegalCharacter(String str) {
+		if(StringUtils.isBlank(str)) {
+			return true;
+		}
+		
+		for(int i = 0; i < str.length(); i++) {
+			for(int j = 0; j < ILLEGAL_FILE_CHARACTERS.length; j++) {
+				if(ILLEGAL_FILE_CHARACTERS[j] == str.charAt(i)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 }

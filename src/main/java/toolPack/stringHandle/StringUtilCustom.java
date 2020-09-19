@@ -5,47 +5,45 @@ import java.util.HashMap;
 import org.apache.commons.lang.StringUtils;
 
 public class StringUtilCustom {
-	
-	public static final HashMap<String, Character> bracketMap = new HashMap<String, Character>();
-	
-	static {{
-		bracketMap.put("{", '}');
-		bracketMap.put("[", ']');
-		bracketMap.put("(", ')');
-		bracketMap.put("<", '>');
-		bracketMap.put("'", '\'');
-		bracketMap.put("\"", '"');
-	}};
 
-	
+	public static final HashMap<String, Character> bracketMap = new HashMap<String, Character>();
+
+	static {
+		{
+			bracketMap.put("{", '}');
+			bracketMap.put("[", ']');
+			bracketMap.put("(", ')');
+			bracketMap.put("<", '>');
+			bracketMap.put("'", '\'');
+			bracketMap.put("\"", '"');
+		}
+	};
+
 	/**
-	 * 从给定的keys, 收集对应的values, 如果找不到, 给空值.
-	 * 2017年6月7日
+	 * 从给定的keys, 收集对应的values, 如果找不到, 给空值. 2017年6月7日
+	 * 
 	 * @param jsonStr
 	 * @param keys
-	 * @return
-	 * HashMap<String,String>
+	 * @return HashMap<String,String>
 	 */
 	public HashMap<String, String> getValuesByKeys(String jsonStr, String... keys) {
 		HashMap<String, String> resultMap = new HashMap<String, String>();
-		for(String key : keys) {
+		for (String key : keys) {
 			resultMap.put(key, getValuesByKey(jsonStr, key));
 		}
 		return resultMap;
 	}
-	
-	
+
 	/**
-	 * 接收key 返回对应的value
-	 * 2017年6月7日
+	 * 接收key 返回对应的value 2017年6月7日
+	 * 
 	 * @param jsonStr
 	 * @param key
-	 * @return
-	 * String
+	 * @return String
 	 */
 	public String getValuesByKey(String jsonStr, String key) {
-		
-		if(StringUtils.isEmpty(key) || !jsonStr.contains(key)){
+
+		if (StringUtils.isEmpty(key) || !jsonStr.contains(key)) {
 			return null;
 		}
 		jsonStr = jsonStr.replaceAll("\\s", "");
@@ -54,23 +52,21 @@ public class StringUtilCustom {
 		int keyLastIndex = keyBeginIndex + key.length();
 		int symbolBeginIndex = keyLastIndex + 2;
 		int symbolEndIndex = matchEndSideSymbol(jsonStr, symbolBeginIndex);
-		
-		if(symbolEndIndex < keyLastIndex) {
+
+		if (symbolEndIndex < keyLastIndex) {
 			return null;
 		}
-		
-		return jsonStr.substring(symbolBeginIndex, symbolEndIndex + 1); 
-		
+
+		return jsonStr.substring(symbolBeginIndex, symbolEndIndex + 1);
+
 	}
-	
-	
+
 	/**
-	 * 通过输入的符号坐标,寻找对应的结尾符号坐标, 找不到返回0
-	 * 2017年6月7日
+	 * 通过输入的符号坐标,寻找对应的结尾符号坐标, 找不到返回0 2017年6月7日
+	 * 
 	 * @param strInput
 	 * @param symbolBeginIndex
-	 * @return
-	 * int
+	 * @return int
 	 */
 	private int matchEndSideSymbol(String strInput, int symbolBeginIndex) {
 
@@ -78,69 +74,70 @@ public class StringUtilCustom {
 
 		Character symbolLeft = strInput.charAt(symbolBeginIndex);
 		Character symbolRight = bracketMap.get(String.valueOf(symbolLeft));
-		
+
 		if (symbolRight == null) {
 			String symbolEnd = ",})]";
-			for(int i = symbolBeginIndex + 1; i < strInput.length(); i++) {
+			for (int i = symbolBeginIndex + 1; i < strInput.length(); i++) {
 				if (symbolEnd.contains(String.valueOf(strInput.charAt(i)))) {
 					return --i;
 				}
 			}
 		}
-		
+
 		int count = 0;
-		if(symbolRight.equals('"')){
-			
-			for(int i = symbolBeginIndex + 1; i < strInput.length() && count >= 0; i++) {
+		if (symbolRight.equals('"')) {
+
+			for (int i = symbolBeginIndex + 1; i < strInput.length() && count >= 0; i++) {
 				if (symbolRight.equals(strInput.charAt(i))) {
-					count --;
+					count--;
 					symbolEndIndex = i;
 				}
 			}
-			
+
 		} else {
-			
-			for(int i = symbolBeginIndex + 1; i < strInput.length() && count >= 0; i++) {
-				if(symbolLeft.equals(strInput.charAt(i))) {
-					count ++;
-				} 
-				else if (symbolRight.equals(strInput.charAt(i))) {
-					count --;
-					if(count < 0) {
+
+			for (int i = symbolBeginIndex + 1; i < strInput.length() && count >= 0; i++) {
+				if (symbolLeft.equals(strInput.charAt(i))) {
+					count++;
+				} else if (symbolRight.equals(strInput.charAt(i))) {
+					count--;
+					if (count < 0) {
 						symbolEndIndex = i;
 					}
 				}
-				
+
 			}
-			
+
 		}
-		
+
 		return symbolEndIndex;
 	}
-	
+
 	/**
 	 * 下划线命名转驼峰命名
+	 * 
 	 * @param strInput
 	 * @return
 	 */
 	public String underLineToCamel(String strInput) {
 		return delimiterToCamel(strInput, "_");
 	}
-	
+
 	/**
 	 * 驼峰转下划线
+	 * 
 	 * @param strInput
 	 * @return
 	 */
 	public String camelToUnderLine(String strInput) {
 		return camelToDelimiter(strInput, "_");
 	}
-	
+
 	/**
 	 * 驼峰命名法转指定分隔符
-	 * @param strInput 输入字符串
-	 * @param delimiter 指定的分隔符
-	 * 例: 输入(abCdeF, +) ----> ab+cde+f
+	 * 
+	 * @param strInput  输入字符串
+	 * @param delimiter 指定的分隔符 例: 输入(abCdeF, +) ----> ab+cde+f
 	 * @return
 	 */
 	public String camelToDelimiter(String strInput, String delimiter) {
@@ -159,12 +156,12 @@ public class StringUtilCustom {
 
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 指定分隔符命名转驼峰命名
-	 * @param strInput 输入字符串
-	 * @param delimiter 指定的分隔符
-	 * 例: 输入(ab+cde+f, +) ----> abCdeF
+	 * 
+	 * @param strInput  输入字符串
+	 * @param delimiter 指定的分隔符 例: 输入(ab+cde+f, +) ----> abCdeF
 	 * @return
 	 */
 	public String delimiterToCamel(String strInput, String delimiter) {
@@ -183,30 +180,33 @@ public class StringUtilCustom {
 
 		return sb.toString();
 	}
-	
+
 	public String getFileSuffixName(String str) {
-		if(StringUtils.isBlank(str)) {
+		if (StringUtils.isBlank(str)) {
+			return "";
+		} else if (str.lastIndexOf(".") < 0) {
 			return "";
 		}
-		return str.substring(str.lastIndexOf("."));
+		return str.substring(str.lastIndexOf(".") + 1);
 	}
-	
-	public final char[] ILLEGAL_FILE_CHARACTERS = {' ', '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':' };
-	
+
+	public final char[] ILLEGAL_FILE_CHARACTERS = { ' ', '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<',
+			'>', '|', '\"', ':' };
+
 	public boolean filenameHasIllegalCharacter(String str) {
-		if(StringUtils.isBlank(str)) {
+		if (StringUtils.isBlank(str)) {
 			return true;
 		}
-		
-		for(int i = 0; i < str.length(); i++) {
-			for(int j = 0; j < ILLEGAL_FILE_CHARACTERS.length; j++) {
-				if(ILLEGAL_FILE_CHARACTERS[j] == str.charAt(i)) {
+
+		for (int i = 0; i < str.length(); i++) {
+			for (int j = 0; j < ILLEGAL_FILE_CHARACTERS.length; j++) {
+				if (ILLEGAL_FILE_CHARACTERS[j] == str.charAt(i)) {
 					return true;
 				}
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 }

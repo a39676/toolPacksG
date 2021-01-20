@@ -173,4 +173,13 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		return isUSWinterTime(LocalDate.now());
 	}
 	
+	public LocalDateTime jsonStrToLocalDateTime(String jsonStr) {
+		try {
+			JSONObject j = JSONObject.fromObject(jsonStr);
+			LocalDateTime l = LocalDateTime.of(j.getInt("year"), j.getInt("monthValue"), j.getInt("dayOfMonth"), j.getInt("hour"), j.getInt("minute"), j.getInt("second"), j.getInt("nano"));
+			return l;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

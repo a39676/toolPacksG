@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
 
@@ -181,5 +182,14 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	@SuppressWarnings("unused")
+	private void lodalDateTimeCalDemo() {
+//		ChronoUnit
+		LocalDateTime fromDate = null;
+		LocalDateTime toDate = null;
+		long minutes = ChronoUnit.MINUTES.between(fromDate, toDate);
+		long hours = ChronoUnit.HOURS.between(fromDate, toDate);
 	}
 }

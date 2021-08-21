@@ -20,6 +20,8 @@ public abstract class DateTimeUtilCommon {
 	public static final String localDateTimeFormatShort = normalDateFormat + " " + "HH:mm";
 	/** yyyyMMddHHmmss */
 	public static final String dateTimeFormatNoSymbol = "yyyyMMddHHmmss";
+	/** yyyyMMdd */
+	public static final String dateFormatNoSymbol = "yyyyMMdd";
 
 	public static final Map<String, String> DATE_FORMAT_REGEXPS = new HashMap<String, String>() ;
 	
@@ -55,7 +57,7 @@ public abstract class DateTimeUtilCommon {
 	}
 	
 	static {{
-	    DATE_FORMAT_REGEXPS.put("^\\d{8}$", "yyyyMMdd");
+	    DATE_FORMAT_REGEXPS.put("^\\d{8}$", dateFormatNoSymbol);
 	    DATE_FORMAT_REGEXPS.put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
 	    DATE_FORMAT_REGEXPS.put("^\\d{4}-\\d{1,2}-\\d{1,2}$", normalDateFormat);
 	    DATE_FORMAT_REGEXPS.put("^\\d{1,2}/\\d{1,2}/\\d{4}$", "MM/dd/yyyy");

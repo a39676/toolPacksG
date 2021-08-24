@@ -394,4 +394,12 @@ public class FileUtilCustom {
 
 	}
 
+	public boolean checkFolderExists(String path) {
+		File f = new File(path);
+		if (!f.exists() || !f.isDirectory()) {
+			return f.mkdirs();
+		} else {
+			return true;
+		}
+	}
 }

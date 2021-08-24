@@ -85,6 +85,15 @@ public class FileUtilCustom {
 		}
 		return b;
 	}
+	
+	/**
+	 * 写入文件(先覆盖文件原有内容)
+	 * @param str
+	 * @param filePath
+	 */
+	public void byteToFile(String str, String filePath) {
+		byteToFile(str.getBytes(StandardCharsets.UTF_8), filePath, false);
+	}
 
 	/**
 	 * 写入文件(先覆盖文件原有内容)

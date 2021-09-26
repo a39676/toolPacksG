@@ -11,7 +11,7 @@ public class MailConstants {
 	public static final String POP3 = "POP3";
 	public static final String SMTP = "SMTP";
 
-	/** 收件人 */
+	/** reciver */
 	public static final String TO = "TO";
 	/** 抄送收件人 */
 	public static final String CC = "CC";

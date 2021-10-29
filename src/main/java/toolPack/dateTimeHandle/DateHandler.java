@@ -92,11 +92,19 @@ public class DateHandler extends DateTimeUtilCommon {
 	    return localDateTimeToDate(endOfDay);
 	}
 	
-	public Calendar toCalendar(LocalDate dateTime) {
+	public Calendar toCalendar(LocalDate date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.clear();
-		calendar.set(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth(), 0, 0, 0);
+		calendar.set(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0, 0, 0);
 		return calendar;
 	}
 	
+	public Lunar toLunar(LocalDate date) {
+		Solar s = new Solar();
+		s.solarDay = date.getDayOfMonth();
+		s.solarMonth = date.getMonthValue();
+		s.solarYear = date.getYear();
+		Lunar lunar = LunarSolarConverter.SolarToLunar(s);
+		return lunar;
+	}
 }

@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Calendar;
 import java.util.Locale;
 
 import net.sf.json.JSONObject;
@@ -133,19 +134,19 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	}
 
 	public LocalDateTime findNextDayOfWeek(LocalDateTime datetime, DayOfWeek dayOfWeek) {
-		while(!dayOfWeek.equals(datetime.getDayOfWeek())) {
+		while (!dayOfWeek.equals(datetime.getDayOfWeek())) {
 			datetime = datetime.plusDays(1);
 		}
 		return datetime.withHour(0).withMinute(0).withSecond(0).withNano(0);
 	}
-	
+
 	public LocalDateTime findLastDayOfWeek(LocalDateTime datetime, DayOfWeek dayOfWeek) {
-		while(!dayOfWeek.equals(datetime.getDayOfWeek())) {
+		while (!dayOfWeek.equals(datetime.getDayOfWeek())) {
 			datetime = datetime.minusDays(1);
 		}
 		return datetime.withHour(0).withMinute(0).withSecond(0).withNano(0);
 	}
-	
+
 	/**
 	 * please input US date
 	 */
@@ -166,18 +167,19 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 			LocalDate winterTimeEnd = findTheXWeekdayOfTheMonth(usDate, 7, 2);
 			return !usDate.isAfter(winterTimeEnd);
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean isUSWinterTime() {
 		return isUSWinterTime(LocalDate.now());
 	}
-	
+
 	public LocalDateTime jsonStrToLocalDateTime(String jsonStr) {
 		try {
 			JSONObject j = JSONObject.fromObject(jsonStr);
-			LocalDateTime l = LocalDateTime.of(j.getInt("year"), j.getInt("monthValue"), j.getInt("dayOfMonth"), j.getInt("hour"), j.getInt("minute"), j.getInt("second"), j.getInt("nano"));
+			LocalDateTime l = LocalDateTime.of(j.getInt("year"), j.getInt("monthValue"), j.getInt("dayOfMonth"),
+					j.getInt("hour"), j.getInt("minute"), j.getInt("second"), j.getInt("nano"));
 			return l;
 		} catch (Exception e) {
 			return null;
@@ -192,4 +194,12 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		long minutes = ChronoUnit.MINUTES.between(fromDate, toDate);
 		long hours = ChronoUnit.HOURS.between(fromDate, toDate);
 	}
+
+	public Calendar toCalendar(LocalDateTime dateTime) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.clear();
+		calendar.set(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth(), dateTime.getHour(), dateTime.getMinute(), dateTime.getSecond());
+		return calendar;
+	}
+	
 }

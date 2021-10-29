@@ -5,18 +5,6 @@ package toolPack.dateTimeHandle;
  * from https://github.com/isee15/Lunar-Solar-Calendar-Converter
  *
  */
-class Lunar {
-	public boolean isleap;
-	public int lunarDay;
-	public int lunarMonth;
-	public int lunarYear;
-}
-
-class Solar {
-	public int solarDay;
-	public int solarMonth;
-	public int solarYear;
-}
 
 public class LunarSolarConverter {
 	/*
@@ -98,30 +86,30 @@ public class LunarSolarConverter {
 		y = y + (mi + 2) / 12;
 		long dd = ddd - (mi * 306 + 5) / 10 + 1;
 		Solar solar = new Solar();
-		solar.solarYear = (int) y;
-		solar.solarMonth = (int) mm;
-		solar.solarDay = (int) dd;
+		solar.setSolarYear((int) y);
+		solar.setSolarMonth((int) mm);
+		solar.setSolarDay((int) dd);
 		return solar;
 	}
 
 	public static Solar LunarToSolar(Lunar lunar) {
-		int days = lunar_month_days[lunar.lunarYear - lunar_month_days[0]];
+		int days = lunar_month_days[lunar.getLunarYear() - lunar_month_days[0]];
 		int leap = GetBitInt(days, 4, 13);
 		int offset = 0;
 		int loopend = leap;
-		if (!lunar.isleap) {
-			if (lunar.lunarMonth <= leap || leap == 0) {
-				loopend = lunar.lunarMonth - 1;
+		if (!lunar.isIsleap()) {
+			if (lunar.getLunarMonth() <= leap || leap == 0) {
+				loopend = lunar.getLunarMonth() - 1;
 			} else {
-				loopend = lunar.lunarMonth;
+				loopend = lunar.getLunarMonth();
 			}
 		}
 		for (int i = 0; i < loopend; i++) {
 			offset += GetBitInt(days, 1, 12 - i) == 1 ? 30 : 29;
 		}
-		offset += lunar.lunarDay;
+		offset += lunar.getLunarDay();
 
-		int solar11 = solar_1_1[lunar.lunarYear - solar_1_1[0]];
+		int solar11 = solar_1_1[lunar.getLunarYear() - solar_1_1[0]];
 
 		int y = GetBitInt(solar11, 12, 9);
 		int m = GetBitInt(solar11, 4, 5);
@@ -132,8 +120,8 @@ public class LunarSolarConverter {
 
 	public static Lunar SolarToLunar(Solar solar) {
 		Lunar lunar = new Lunar();
-		int index = solar.solarYear - solar_1_1[0];
-		int data = (solar.solarYear << 9) | (solar.solarMonth << 5) | (solar.solarDay);
+		int index = solar.getSolarYear() - solar_1_1[0];
+		int data = (solar.getSolarYear() << 9) | (solar.getSolarMonth() << 5) | (solar.getSolarDay());
 		int solar11 = 0;
 		if (solar_1_1[index] > data) {
 			index--;
@@ -142,7 +130,7 @@ public class LunarSolarConverter {
 		int y = GetBitInt(solar11, 12, 9);
 		int m = GetBitInt(solar11, 4, 5);
 		int d = GetBitInt(solar11, 5, 0);
-		long offset = SolarToInt(solar.solarYear, solar.solarMonth, solar.solarDay) - SolarToInt(y, m, d);
+		long offset = SolarToInt(solar.getSolarYear(), solar.getSolarMonth(), solar.getSolarDay()) - SolarToInt(y, m, d);
 
 		int days = lunar_month_days[index];
 		int leap = GetBitInt(days, 4, 13);
@@ -162,17 +150,17 @@ public class LunarSolarConverter {
 			}
 		}
 		lunarD = (int) (offset);
-		lunar.lunarYear = lunarY;
-		lunar.lunarMonth = lunarM;
-		lunar.isleap = false;
+		lunar.setLunarYear(lunarY);
+		lunar.setLunarMonth(lunarM);
+		lunar.setIsleap(false);
 		if (leap != 0 && lunarM > leap) {
-			lunar.lunarMonth = lunarM - 1;
+			lunar.setLunarMonth(lunarM - 1);
 			if (lunarM == leap + 1) {
-				lunar.isleap = true;
+				lunar.setIsleap(true);
 			}
 		}
 
-		lunar.lunarDay = lunarD;
+		lunar.setLunarDay(lunarD);
 		return lunar;
 	}
 }

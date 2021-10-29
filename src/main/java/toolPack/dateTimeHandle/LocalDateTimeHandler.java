@@ -204,9 +204,9 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	
 	public Lunar toLunar(LocalDateTime dateTime) {
 		Solar s = new Solar();
-		s.solarDay = dateTime.getDayOfMonth();
-		s.solarMonth = dateTime.getMonthValue();
-		s.solarYear = dateTime.getYear();
+		s.setSolarDay(dateTime.getDayOfMonth());
+		s.setSolarMonth(dateTime.getMonthValue());
+		s.setSolarYear(dateTime.getYear());
 		Lunar lunar = LunarSolarConverter.SolarToLunar(s);
 		return lunar;
 	}

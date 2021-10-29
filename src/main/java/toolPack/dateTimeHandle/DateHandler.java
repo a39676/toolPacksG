@@ -3,6 +3,7 @@ package toolPack.dateTimeHandle;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Calendar;
@@ -89,6 +90,13 @@ public class DateHandler extends DateTimeUtilCommon {
 	    LocalDateTime localDateTime = dateToLocalDateTime(date);
 	    LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
 	    return localDateTimeToDate(endOfDay);
+	}
+	
+	public Calendar toCalendar(LocalDate dateTime) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.clear();
+		calendar.set(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth(), 0, 0, 0);
+		return calendar;
 	}
 	
 }

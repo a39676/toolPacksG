@@ -107,4 +107,9 @@ public class DateHandler extends DateTimeUtilCommon {
 		Lunar lunar = LunarSolarConverter.SolarToLunar(s);
 		return lunar;
 	}
+	
+	public LocalDate toLocalDateTime(Lunar lunar) {
+		Solar s = LunarSolarConverter.LunarToSolar(lunar);
+		return LocalDate.of(s.getSolarYear(), s.getSolarMonth(), s.getSolarDay());
+	}
 }

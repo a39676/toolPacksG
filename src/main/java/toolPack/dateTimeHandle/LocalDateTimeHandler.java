@@ -198,10 +198,11 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	public Calendar toCalendar(LocalDateTime dateTime) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.clear();
-		calendar.set(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth(), dateTime.getHour(), dateTime.getMinute(), dateTime.getSecond());
+		calendar.set(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth(), dateTime.getHour(),
+				dateTime.getMinute(), dateTime.getSecond());
 		return calendar;
 	}
-	
+
 	public Lunar toLunar(LocalDateTime dateTime) {
 		Solar s = new Solar();
 		s.setSolarDay(dateTime.getDayOfMonth());
@@ -209,5 +210,10 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 		s.setSolarYear(dateTime.getYear());
 		Lunar lunar = LunarSolarConverter.SolarToLunar(s);
 		return lunar;
+	}
+
+	public LocalDateTime toLocalDateTime(Lunar lunar) {
+		Solar s = LunarSolarConverter.LunarToSolar(lunar);
+		return LocalDateTime.of(s.getSolarYear(), s.getSolarMonth(), s.getSolarDay(), 0, 0, 0);
 	}
 }

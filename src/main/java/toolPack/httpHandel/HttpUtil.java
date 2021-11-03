@@ -38,34 +38,37 @@ public class HttpUtil {
 	public final String patch = "PATCH";
 	public final String options = "OPTIONS";
 	public final String trace = "TRACE";
-	
+
 	public Map<String, String> builddefaultRequestPropertyMap() {
 		Map<String, String> defaultRequestPropertyMap = new HashMap<String, String>();
 		defaultRequestPropertyMap.put("User-Agent", defaultUserAgent);
-        defaultRequestPropertyMap.put("Content-Type", "application/x-www-form-urlencoded charset=UTF-8");
-        
-        return defaultRequestPropertyMap;
+		defaultRequestPropertyMap.put("Content-Type", "application/x-www-form-urlencoded charset=UTF-8");
+
+		return defaultRequestPropertyMap;
 	}
 
-	public String sendGet(String url, Map<String, String> keyValues, Map<String, String> requestPropertyMap) throws IOException  {
+	public String sendGet(String url, Map<String, String> keyValues, Map<String, String> requestPropertyMap)
+			throws IOException {
+		
+		if (keyValues != null && keyValues.size() > 0) {
+			url = url + "?";
+			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
+				url = url + entry.getKey() + "+" + entry.getValue();
+			}
+		}
+
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		// optional default is GET
 		con.setRequestMethod(get);
 
-		if(requestPropertyMap == null) {
+		if (requestPropertyMap == null) {
 			requestPropertyMap = builddefaultRequestPropertyMap();
 		}
-		
-		for(Entry<String, String> entry : requestPropertyMap.entrySet()) {
-			con.setRequestProperty(entry.getKey(), entry.getValue());
-		}
 
-		if (keyValues != null && keyValues.size() > 0) {
-			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
-				con.setRequestProperty(entry.getKey(), entry.getValue());
-			}
+		for (Entry<String, String> entry : requestPropertyMap.entrySet()) {
+			con.setRequestProperty(entry.getKey(), entry.getValue());
 		}
 
 		// int responseCode = con.getResponseCode();
@@ -86,21 +89,22 @@ public class HttpUtil {
 		// print result
 		return response.toString();
 	}
-	
-	public String sendGet(String url, Map<String, String> keyValues) throws IOException  {
+
+	public String sendGet(String url, Map<String, String> keyValues) throws IOException {
 		return sendGet(url, keyValues, null);
 	}
-	
-	public InputStream sendRequestGetInputStreamReader(String httpMethod, String userAgent, String url, Map<String, String> keyValues) throws IOException  {
+
+	public InputStream sendRequestGetInputStreamReader(String httpMethod, String userAgent, String url,
+			Map<String, String> keyValues) throws IOException {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-		if(StringUtils.isBlank(httpMethod)) {
+		if (StringUtils.isBlank(httpMethod)) {
 			httpMethod = get;
 		}
 		con.setRequestMethod(httpMethod);
 
-		if(StringUtils.isBlank(userAgent)) {
+		if (StringUtils.isBlank(userAgent)) {
 			con.setRequestProperty("User-Agent", defaultUserAgent);
 		} else {
 			con.setRequestProperty("User-Agent", userAgent);
@@ -111,18 +115,19 @@ public class HttpUtil {
 				con.setRequestProperty(entry.getKey(), entry.getValue());
 			}
 		}
-		
+
 		return con.getInputStream();
 	}
-	
-	public String sendRequest(String httpMethod, String userAgent, String url, Map<String, String> keyValues) throws IOException  {
+
+	public String sendRequest(String httpMethod, String userAgent, String url, Map<String, String> keyValues)
+			throws IOException {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		con.setRequestMethod(httpMethod);
 
-		if(StringUtils.isBlank(userAgent)) {
+		if (StringUtils.isBlank(userAgent)) {
 			con.setRequestProperty("User-Agent", defaultUserAgent);
 		} else {
 			con.setRequestProperty("User-Agent", userAgent);
@@ -133,92 +138,91 @@ public class HttpUtil {
 				con.setRequestProperty(entry.getKey(), entry.getValue());
 			}
 		}
-		
+
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
-	
+
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
 		}
 		in.close();
 		con.disconnect();
-	
+
 		return response.toString();
 
 	}
-	
 
 	public String sendGet(String url) throws Exception {
 		return sendGet(url, null);
 	}
 
-	public String sendPost(String url, String urlParameters, Map<String, String> requestPropertyMap) throws IOException  {
+	public String sendPost(String url, String urlParameters, Map<String, String> requestPropertyMap)
+			throws IOException {
 //		String urlParameters = "{\"version\":\"2\", \"platform\":\"1\", \"status\":\"0\", \"des\":\"\"}";
 		HttpURLConnection con = null;
 		StringBuilder response = new StringBuilder();
 
-        byte[] postData = null;
-        if(StringUtils.isNotBlank(urlParameters)) {
-        	postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-        } 
-        
-        try {
+		byte[] postData = null;
+		if (StringUtils.isNotBlank(urlParameters)) {
+			postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+		}
 
-            URL myurl = new URL(url);
-            con = (HttpURLConnection) myurl.openConnection();
+		try {
 
-            con.setDoOutput(true);
-            con.setRequestMethod(post);
-            
-            if(requestPropertyMap == null) {
-    			requestPropertyMap = builddefaultRequestPropertyMap();
-    		}
-    		
-    		for(Entry<String, String> entry : requestPropertyMap.entrySet()) {
-    			con.setRequestProperty(entry.getKey(), entry.getValue());
-    		}
-            
-            if(postData != null) {
-            	DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            	wr.write(postData);
-            	wr.flush();
-            }
+			URL myurl = new URL(url);
+			con = (HttpURLConnection) myurl.openConnection();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String line;
+			con.setDoOutput(true);
+			con.setRequestMethod(post);
 
-            while ((line = in.readLine()) != null) {
-                response.append(line);
-                response.append(System.lineSeparator());
-            }
+			if (requestPropertyMap == null) {
+				requestPropertyMap = builddefaultRequestPropertyMap();
+			}
 
+			for (Entry<String, String> entry : requestPropertyMap.entrySet()) {
+				con.setRequestProperty(entry.getKey(), entry.getValue());
+			}
 
-        } finally {
-            if(con != null) {
-            	con.disconnect();
-            }
-        }
+			if (postData != null) {
+				DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+				wr.write(postData);
+				wr.flush();
+			}
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String line;
+
+			while ((line = in.readLine()) != null) {
+				response.append(line);
+				response.append(System.lineSeparator());
+			}
+
+		} finally {
+			if (con != null) {
+				con.disconnect();
+			}
+		}
 		return response.toString();
-		
+
 	}
-	
-	public String sendPostRestful(String url, String jsonStr) throws IOException  {
+
+	public String sendPostRestful(String url, String jsonStr) throws IOException {
 		Map<String, String> requestPropertyMap = builddefaultRequestPropertyMap();
 		requestPropertyMap.put("Content-Type", "application/json; charset=UTF-8");
 		requestPropertyMap.put("Data-Type", "json; charset=UTF-8");
-		
+
 		return sendPost(url, jsonStr, requestPropertyMap);
 	}
 
 	public String sendPost(String url) throws Exception {
 		return sendPost(url, null, null);
 	}
-	
+
 	public String sendPost(String url, String params) throws Exception {
 		return sendPost(url, params, null);
 	}
-	
+
 	public void httpPostUploadFileDemo() throws MalformedURLException, IOException {
 
 		String url = "http://example.com/upload";
@@ -233,40 +237,43 @@ public class HttpUtil {
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
-		try (
-		    OutputStream output = connection.getOutputStream();
-		    PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);
-		) {
-		    // Send normal param.
-		    writer.append("--" + boundary).append(CRLF);
-		    writer.append("Content-Disposition: form-data; name=\"param\"").append(CRLF);
-		    writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF);
-		    writer.append(CRLF).append(param).append(CRLF).flush();
+		try (OutputStream output = connection.getOutputStream();
+				PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);) {
+			// Send normal param.
+			writer.append("--" + boundary).append(CRLF);
+			writer.append("Content-Disposition: form-data; name=\"param\"").append(CRLF);
+			writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF);
+			writer.append(CRLF).append(param).append(CRLF).flush();
 
-		    // Send text file.
-		    writer.append("--" + boundary).append(CRLF);
-		    writer.append("Content-Disposition: form-data; name=\"textFile\"; filename=\"" + textFile.getName() + "\"").append(CRLF);
-		    writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF); // Text file itself must be saved in this charset!
-		    writer.append(CRLF).flush();
-		    Files.copy(textFile.toPath(), output);
-		    output.flush(); // Important before continuing with writer!
-		    writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
+			// Send text file.
+			writer.append("--" + boundary).append(CRLF);
+			writer.append("Content-Disposition: form-data; name=\"textFile\"; filename=\"" + textFile.getName() + "\"")
+					.append(CRLF);
+			writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF); // Text file itself must be
+																						// saved in this charset!
+			writer.append(CRLF).flush();
+			Files.copy(textFile.toPath(), output);
+			output.flush(); // Important before continuing with writer!
+			writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
 
-		    // Send binary file.
-		    writer.append("--" + boundary).append(CRLF);
-		    writer.append("Content-Disposition: form-data; name=\"binaryFile\"; filename=\"" + binaryFile.getName() + "\"").append(CRLF);
-		    writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
-		    writer.append("Content-Transfer-Encoding: binary").append(CRLF);
-		    writer.append(CRLF).flush();
-		    Files.copy(binaryFile.toPath(), output);
-		    output.flush(); // Important before continuing with writer!
-		    writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
+			// Send binary file.
+			writer.append("--" + boundary).append(CRLF);
+			writer.append(
+					"Content-Disposition: form-data; name=\"binaryFile\"; filename=\"" + binaryFile.getName() + "\"")
+					.append(CRLF);
+			writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
+			writer.append("Content-Transfer-Encoding: binary").append(CRLF);
+			writer.append(CRLF).flush();
+			Files.copy(binaryFile.toPath(), output);
+			output.flush(); // Important before continuing with writer!
+			writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
 
-		    // End of multipart/form-data.
-		    writer.append("--" + boundary + "--").append(CRLF).flush();
+			// End of multipart/form-data.
+			writer.append("--" + boundary + "--").append(CRLF).flush();
 		}
 
-		// Request is lazily fired whenever you need to obtain information about response.
+		// Request is lazily fired whenever you need to obtain information about
+		// response.
 		int responseCode = ((HttpURLConnection) connection).getResponseCode();
 		System.out.println(responseCode); // Should be 200
 

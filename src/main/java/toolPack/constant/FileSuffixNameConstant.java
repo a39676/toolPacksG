@@ -11,6 +11,7 @@ public class FileSuffixNameConstant {
 	public static final String PNG = "png";
 	public static final String BMP = "bmp";
 	public static final String TIF = "tif";
+	public static final String GIF = "gif";
 	public static final String WEBP = "webp";
 	public static final String WEBM = "webm";
 

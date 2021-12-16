@@ -28,7 +28,7 @@ public class FileSuffixNameConstant {
 	public static final List<String> DOCUMENT_SUFFIX = new ArrayList<String>();
 
 	static {
-		IMAGE_SUFFIX.addAll(Arrays.asList(JPG, JPEG, PNG, BMP, TIF, WEBP, WEBM));
+		IMAGE_SUFFIX.addAll(Arrays.asList(JPG, JPEG, PNG, BMP, TIF, GIF, WEBP, WEBM));
 		DOCUMENT_SUFFIX.addAll(Arrays.asList(TXT, DOC, DOCX, PPT, XLSX, XLS, CSV, PDF));
 	}
 	

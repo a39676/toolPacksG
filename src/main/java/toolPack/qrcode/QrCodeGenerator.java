@@ -1,8 +1,7 @@
 package toolPack.qrcode;
 
-import java.io.FileOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 import com.google.zxing.BarcodeFormat;
@@ -11,14 +10,12 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 
-import toolPack.constant.FileSuffixNameConstant;
-
 public class QrCodeGenerator {
 
 	private static final int defaultX = 200;
 	private static final int defaultY = 200;
 
-	public void generation(String str, String filePathStr, Integer x, Integer y) throws WriterException, IOException {
+	public BufferedImage generation(String str, String filePathStr, Integer x, Integer y) throws WriterException {
 		if (x == null) {
 			x = defaultX;
 		}
@@ -32,11 +29,10 @@ public class QrCodeGenerator {
 				BarcodeFormat.QR_CODE, 
 				x, y);
 		
-		OutputStream output = new FileOutputStream(filePathStr);
-		MatrixToImageWriter.writeToStream(matrix, FileSuffixNameConstant.PNG, output);
+		return MatrixToImageWriter.toBufferedImage(matrix);
 	}
 
-	public void generation(String str, String filePathStr) throws WriterException, IOException {
-		generation(str, filePathStr, defaultX, defaultY);
+	public BufferedImage generation(String str, String filePathStr) throws WriterException, IOException {
+		return generation(str, filePathStr, defaultX, defaultY);
 	}
 }

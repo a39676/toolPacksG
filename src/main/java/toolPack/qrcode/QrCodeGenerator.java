@@ -15,7 +15,7 @@ public class QrCodeGenerator {
 	private static final int defaultX = 200;
 	private static final int defaultY = 200;
 
-	public BufferedImage generation(String str, String filePathStr, Integer x, Integer y) throws WriterException {
+	public BufferedImage generation(String str, Integer x, Integer y) throws WriterException {
 		if (x == null) {
 			x = defaultX;
 		}
@@ -32,7 +32,7 @@ public class QrCodeGenerator {
 		return MatrixToImageWriter.toBufferedImage(matrix);
 	}
 
-	public BufferedImage generation(String str, String filePathStr) throws WriterException, IOException {
-		return generation(str, filePathStr, defaultX, defaultY);
+	public BufferedImage generation(String str) throws WriterException, IOException {
+		return generation(str, defaultX, defaultY);
 	}
 }

@@ -79,6 +79,8 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	}
 	
 	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString, String pattern, Locale locale) {
+		dateString = dateString.replaceAll("[tT]", " ");
+		
 		if (locale == null) {
 			locale = Locale.US;
 		}

@@ -10,6 +10,8 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.sf.json.JSONObject;
 
 public class LocalDateTimeHandler extends DateTimeUtilCommon {
@@ -65,14 +67,30 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	}
 
 	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString) {
-		return stringToLocalDateTimeUnkonwFormat(dateString, null);
+		return stringToLocalDateTimeUnkonwFormat(dateString, null, null);
 	}
 
 	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString, Locale locale) {
+		return stringToLocalDateTimeUnkonwFormat(dateString, null, locale);
+	}
+	
+	public LocalDateTime stringToLocalDateTime(String dateString, String pattern) {
+		return stringToLocalDateTimeUnkonwFormat(dateString, pattern, null);
+	}
+	
+	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString, String pattern, Locale locale) {
 		if (locale == null) {
 			locale = Locale.US;
 		}
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(determineDateFormat(dateString), locale);
+		
+		if(StringUtils.isBlank(pattern)) {
+			pattern = determineDateFormat(dateString);
+			if(pattern == null) {
+				return null;
+			}
+		}
+		
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern, locale);
 
 		if (dateFormat != null) {
 			try {

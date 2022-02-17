@@ -17,7 +17,9 @@ public abstract class DateTimeUtilCommon {
 	/** yyyy-MM-ddTHH:mm:ss */
 	public static final String localDateTimeFormatLong = normalDateFormat + "T" + normalTimeFormat;
 	/** yyyy-MM-dd HH:mm */
-	public static final String localDateTimeFormatShort = normalDateFormat + " " + "HH:mm";
+	public static final String normalDateTimeFormatShort = normalDateFormat + " " + "HH:mm";
+	/** yyyy-MM-ddTHH:mm */
+	public static final String localDateTimeFormatShort = normalDateFormat + "T" + "HH:mm";
 	/** yyyyMMddHHmmss */
 	public static final String dateTimeFormatNoSymbol = "yyyyMMddHHmmss";
 	/** yyyyMMdd */
@@ -82,7 +84,6 @@ public abstract class DateTimeUtilCommon {
 	    DATE_FORMAT_REGEXPS.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMMM yyyy HH:mm:ss");
 	    DATE_FORMAT_REGEXPS.put("^\\d{4}-\\d{1,2}-\\d{1,2}t\\d{1,2}:\\d{2}:\\d{2}$", localDateTimeFormatLong);
 	    DATE_FORMAT_REGEXPS.put("^\\d{4}-\\d{1,2}-\\d{1,2}t\\d{1,2}:\\d{2}$", "dd MMMM yyyy HH:mm");
-	    
 	}}
 	
 }

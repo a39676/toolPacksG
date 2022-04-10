@@ -8,7 +8,7 @@ package toolPack.dateTimeHandle;
 
 public class LunarSolarConverter {
 	/*
-	 * |----4位闰月|-------------13位1为30天，0为29天|
+	 * |----4位闰月|-------------13位1为30天, 0为29天|
 	 */
 
 	private static int[] lunar_month_days = { 1887, 0x1694, 0x16aa, 0x4ad5, 0xab6, 0xc4b7, 0x4ae, 0xa56, 0xb52a, 0x1d2a,

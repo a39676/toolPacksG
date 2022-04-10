@@ -57,10 +57,10 @@ public class FileUtilCustom {
 		try {
 
 			if (!file.exists()) {
-				System.out.println("文件不存在！");
+				System.out.println("文件不存在!");
 			}
 			if (file.isDirectory()) {
-				System.out.println("不能上传目录！");
+				System.out.println("不能上传目录!");
 			}
 
 			byte[] temp = new byte[2048];
@@ -166,11 +166,11 @@ public class FileUtilCustom {
 		try {
 
 			if (!inputFile.exists()) {
-				System.out.println("文件不存在！");
+				System.out.println("文件不存在!");
 				return;
 			}
 			if (inputFile.isDirectory()) {
-				System.out.println("不能指定一个目录！");
+				System.out.println("不能指定一个目录!");
 				return;
 			}
 			if (!outputFile.exists()) {

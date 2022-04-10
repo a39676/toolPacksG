@@ -53,7 +53,7 @@ public class HttpUtil {
 		if (keyValues != null && keyValues.size() > 0) {
 			url = url + "?";
 			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
-				url = url + entry.getKey() + "+" + entry.getValue();
+				url = url + entry.getKey() + "=" + entry.getValue();
 			}
 		}
 

@@ -77,17 +77,26 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	}
 
 	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString, String pattern, Locale locale) {
-		dateString = dateString.replaceAll("[tT]", " ");
-
-		if (locale == null) {
-			locale = Locale.US;
+		if (dateString.startsWith("{")) {
+			try {
+				return localDateTimeJsonStrToLocalDateTime(dateString);
+			} catch (Exception e) {
+				return null;
+			}
 		}
+
+		dateString = dateString.replaceAll("[tT]", " ");
+		dateString = dateString.replaceAll("\"", "");
 
 		if (StringUtils.isBlank(pattern)) {
 			pattern = determineDateFormat(dateString);
 			if (pattern == null) {
 				return null;
 			}
+		}
+
+		if (locale == null) {
+			locale = Locale.US;
 		}
 
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern, locale);
@@ -102,13 +111,9 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 					return null;
 				}
 			}
-		} else {
-			try {
-				return localDateTimeJsonStrToLocalDateTime(dateString);
-			} catch (Exception e) {
-				return null;
-			}
 		}
+
+		return null;
 	}
 
 	public LocalDate findTheXWeekdayOfTheMonth(LocalDate date, int weekdayValue, int targetWeekCount) {

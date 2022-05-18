@@ -54,16 +54,14 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	 *                         { "id": "ISO", "calendarType": "iso8601" } }
 	 * @return
 	 */
-	public LocalDateTime localDateTimeJsonStrToLocalDateTime(String localDateTimeStr) {
-		LocalDateTime ldt = null;
+	private LocalDateTime localDateTimeJsonStrToLocalDateTime(String localDateTimeStr) {
 		try {
 			JSONObject j = JSONObject.fromObject(localDateTimeStr);
-			ldt = LocalDateTime.of(j.getInt("year"), j.getInt("monthValue"), j.getInt("dayOfMonth"), j.getInt("hour"),
-					j.getInt("minute"), j.getInt("second"));
+			return LocalDateTime.of(j.getInt("year"), j.getInt("monthValue"), j.getInt("dayOfMonth"), j.getInt("hour"),
+					j.getInt("minute"), j.getInt("second"), j.getInt("nano"));
 		} catch (Exception e) {
 			return null;
 		}
-		return ldt;
 	}
 
 	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString) {
@@ -73,25 +71,25 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString, Locale locale) {
 		return stringToLocalDateTimeUnkonwFormat(dateString, null, locale);
 	}
-	
+
 	public LocalDateTime stringToLocalDateTime(String dateString, String pattern) {
 		return stringToLocalDateTimeUnkonwFormat(dateString, pattern, null);
 	}
-	
+
 	public LocalDateTime stringToLocalDateTimeUnkonwFormat(String dateString, String pattern, Locale locale) {
 		dateString = dateString.replaceAll("[tT]", " ");
-		
+
 		if (locale == null) {
 			locale = Locale.US;
 		}
-		
-		if(StringUtils.isBlank(pattern)) {
+
+		if (StringUtils.isBlank(pattern)) {
 			pattern = determineDateFormat(dateString);
-			if(pattern == null) {
+			if (pattern == null) {
 				return null;
 			}
 		}
-		
+
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern, locale);
 
 		if (dateFormat != null) {
@@ -104,8 +102,13 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 					return null;
 				}
 			}
+		} else {
+			try {
+				return localDateTimeJsonStrToLocalDateTime(dateString);
+			} catch (Exception e) {
+				return null;
+			}
 		}
-		return null;
 	}
 
 	public LocalDate findTheXWeekdayOfTheMonth(LocalDate date, int weekdayValue, int targetWeekCount) {
@@ -193,17 +196,6 @@ public class LocalDateTimeHandler extends DateTimeUtilCommon {
 
 	public boolean isUSWinterTime() {
 		return isUSWinterTime(LocalDate.now());
-	}
-
-	public LocalDateTime jsonStrToLocalDateTime(String jsonStr) {
-		try {
-			JSONObject j = JSONObject.fromObject(jsonStr);
-			LocalDateTime l = LocalDateTime.of(j.getInt("year"), j.getInt("monthValue"), j.getInt("dayOfMonth"),
-					j.getInt("hour"), j.getInt("minute"), j.getInt("second"), j.getInt("nano"));
-			return l;
-		} catch (Exception e) {
-			return null;
-		}
 	}
 
 	@SuppressWarnings("unused")

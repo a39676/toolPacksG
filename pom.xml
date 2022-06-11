@@ -134,7 +134,6 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					<outputDirectory>../commonTool</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>

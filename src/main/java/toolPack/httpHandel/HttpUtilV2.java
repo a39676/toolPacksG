@@ -21,7 +21,7 @@ import org.apache.http.client.utils.URIBuilder;
  */
 public class HttpUtilV2 {
 
-	private final String defaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36";
+	private final String defaultUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36";
 	public final String get = "GET";
 	public final String post = "POST";
 	public final String put = "PUT";

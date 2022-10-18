@@ -153,7 +153,7 @@ public class HttpUtil {
 
 	}
 
-	public String sendGet(String url) throws Exception {
+	public String sendGet(String url) throws IOException {
 		return sendGet(url, null);
 	}
 

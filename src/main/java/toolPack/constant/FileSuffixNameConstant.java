@@ -23,6 +23,8 @@ public class FileSuffixNameConstant {
 	public static final String XLS = "xls";
 	public static final String CSV = "csv";
 	public static final String PDF = "pdf";
+	
+	public static final String HTML = "html";
 
 	public static final List<String> IMAGE_SUFFIX = new ArrayList<String>();
 	public static final List<String> DOCUMENT_SUFFIX = new ArrayList<String>();
@@ -32,7 +34,4 @@ public class FileSuffixNameConstant {
 		DOCUMENT_SUFFIX.addAll(Arrays.asList(TXT, DOC, DOCX, PPT, XLSX, XLS, CSV, PDF));
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(DOCUMENT_SUFFIX);
-	}
 }

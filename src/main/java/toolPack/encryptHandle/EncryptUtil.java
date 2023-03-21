@@ -21,11 +21,11 @@ import org.apache.commons.lang3.StringUtils;
 
 public class EncryptUtil {
 	
-	public String Sha1(String str) {
+	public String sha1(String str) {
 		return DigestUtils.sha1Hex(str);
 	}
 	
-	public byte[] ToMd5ByteArray(String str) {
+	public byte[] toMd5ByteArray(String str) {
 		
 		try {
 			byte[] bytesOfMessage = str.getBytes(StandardCharsets.UTF_8);
@@ -37,12 +37,12 @@ public class EncryptUtil {
 		}
 	}
 	
-	public String ToMd5String(String str) { 
-		if(ToMd5ByteArray(str) == null || ToMd5ByteArray(str).length == 0 ) {
+	public String toMd5String(String str) { 
+		if(toMd5ByteArray(str) == null || toMd5ByteArray(str).length == 0 ) {
 			return null;
 		}
 		try {
-			return new String(ToMd5ByteArray(str));
+			return new String(toMd5ByteArray(str));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

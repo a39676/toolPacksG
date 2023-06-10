@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jsoup.Jsoup;
 
 import com.google.gson.Gson;
@@ -14,6 +16,8 @@ import com.google.gson.GsonBuilder;
 import toolPack.imgbb.pojo.dto.ImgbbUploadResponseDTO;
 
 public class ImgbbUtil {
+	
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	public ImgbbUploadResponseDTO uploadImg(String apiKey, String filename, String imgInBase64Str,
 			boolean saveForLongTime) {
@@ -38,7 +42,7 @@ public class ImgbbUtil {
 		Response response = null;
 		try {
 			response = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).method(Method.POST)
-					.data(dataMap).timeout(20000).userAgent(defaultUserAgent).execute();
+					.data(dataMap).timeout(30000).userAgent(defaultUserAgent).execute();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -55,6 +59,7 @@ public class ImgbbUtil {
 			return gson.fromJson(jsonStr, clazz);
 
 		} catch (Exception e) {
+			log.error("JSON str: " + jsonStr);
 			e.printStackTrace();
 		}
 		return null;

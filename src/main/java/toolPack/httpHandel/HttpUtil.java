@@ -49,11 +49,17 @@ public class HttpUtil {
 
 	public String sendGet(String url, Map<String, String> keyValues, Map<String, String> requestPropertyMap)
 			throws IOException {
-		
+
 		if (keyValues != null && keyValues.size() > 0) {
 			url = url + "?";
+			boolean flag = true;
 			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
-				url = url + entry.getKey() + "=" + entry.getValue();
+				if (flag) {
+					url = url + entry.getKey() + "=" + entry.getValue();
+					flag = false;
+				} else {
+					url = url + "&" + entry.getKey() + "=" + entry.getValue();
+				}
 			}
 		}
 

@@ -11,6 +11,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -48,7 +50,7 @@ public class HttpUtil {
 	}
 
 	public String sendGet(String url, Map<String, String> keyValues, Map<String, String> requestPropertyMap)
-			throws IOException {
+			throws IOException, URISyntaxException {
 
 		if (keyValues != null && keyValues.size() > 0) {
 			url = url + "?";
@@ -63,7 +65,7 @@ public class HttpUtil {
 			}
 		}
 
-		URL obj = new URL(url);
+		URL obj = new URI(url).toURL();
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		// optional default is GET
@@ -96,13 +98,13 @@ public class HttpUtil {
 		return response.toString();
 	}
 
-	public String sendGet(String url, Map<String, String> keyValues) throws IOException {
+	public String sendGet(String url, Map<String, String> keyValues) throws IOException, URISyntaxException {
 		return sendGet(url, keyValues, null);
 	}
 
 	public InputStream sendRequestGetInputStreamReader(String httpMethod, String userAgent, String url,
-			Map<String, String> keyValues) throws IOException {
-		URL obj = new URL(url);
+			Map<String, String> keyValues) throws IOException, URISyntaxException {
+		URL obj = new URI(url).toURL();
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		if (StringUtils.isBlank(httpMethod)) {
@@ -126,9 +128,9 @@ public class HttpUtil {
 	}
 
 	public String sendRequest(String httpMethod, String userAgent, String url, Map<String, String> keyValues)
-			throws IOException {
+			throws IOException, URISyntaxException {
 
-		URL obj = new URL(url);
+		URL obj = new URI(url).toURL();
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		con.setRequestMethod(httpMethod);
@@ -159,12 +161,12 @@ public class HttpUtil {
 
 	}
 
-	public String sendGet(String url) throws IOException {
+	public String sendGet(String url) throws IOException, URISyntaxException {
 		return sendGet(url, null);
 	}
 
 	public String sendPost(String url, String urlParameters, Map<String, String> requestPropertyMap)
-			throws IOException {
+			throws IOException, URISyntaxException {
 //		String urlParameters = "{\"version\":\"2\", \"platform\":\"1\", \"status\":\"0\", \"des\":\"\"}";
 		HttpURLConnection con = null;
 		StringBuilder response = new StringBuilder();
@@ -176,7 +178,7 @@ public class HttpUtil {
 
 		try {
 
-			URL myurl = new URL(url);
+			URL myurl = new URI(url).toURL();
 			con = (HttpURLConnection) myurl.openConnection();
 
 			con.setDoOutput(true);
@@ -213,7 +215,7 @@ public class HttpUtil {
 
 	}
 
-	public String sendPostRestful(String url, String jsonStr) throws IOException {
+	public String sendPostRestful(String url, String jsonStr) throws IOException, URISyntaxException {
 		Map<String, String> requestPropertyMap = builddefaultRequestPropertyMap();
 		requestPropertyMap.put("Content-Type", "application/json; charset=UTF-8");
 		requestPropertyMap.put("Data-Type", "json; charset=UTF-8");
@@ -229,7 +231,7 @@ public class HttpUtil {
 		return sendPost(url, params, null);
 	}
 
-	public void httpPostUploadFileDemo() throws MalformedURLException, IOException {
+	public void httpPostUploadFileDemo() throws MalformedURLException, IOException, URISyntaxException {
 
 		String url = "http://example.com/upload";
 		String charset = StandardCharsets.UTF_8.displayName();
@@ -239,7 +241,7 @@ public class HttpUtil {
 		String boundary = Long.toHexString(System.currentTimeMillis()); // Just generate some unique random value.
 		String CRLF = "\r\n"; // Line separator required by multipart/form-data.
 
-		URLConnection connection = new URL(url).openConnection();
+		URLConnection connection = new URI(url).toURL().openConnection();
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 

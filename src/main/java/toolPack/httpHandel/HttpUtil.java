@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -82,8 +83,16 @@ public class HttpUtil {
 		// int responseCode = con.getResponseCode();
 		// System.out.println("\nSending 'GET' request to URL : " + url);
 		// System.out.println("Response Code : " + responseCode);
+		String contentEncoding = con.getContentEncoding();
+		BufferedReader in = null;
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+		if ("gzip".equals(contentEncoding)) {
+			InputStream inStream = new GZIPInputStream(con.getInputStream());
+			in = new BufferedReader(new InputStreamReader(inStream, StandardCharsets.UTF_8));
+		} else {
+			in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+		}
+
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 

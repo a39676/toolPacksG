@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -66,24 +67,30 @@ public class HttpUtil {
 		}
 
 		URL obj = new URI(url).toURL();
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 
 		// optional default is GET
-		con.setRequestMethod(get);
+		conn.setRequestMethod(get);
 
 		if (requestPropertyMap == null) {
 			requestPropertyMap = builddefaultRequestPropertyMap();
 		}
 
 		for (Entry<String, String> entry : requestPropertyMap.entrySet()) {
-			con.setRequestProperty(entry.getKey(), entry.getValue());
+			conn.setRequestProperty(entry.getKey(), entry.getValue());
 		}
 
 		// int responseCode = con.getResponseCode();
 		// System.out.println("\nSending 'GET' request to URL : " + url);
 		// System.out.println("Response Code : " + responseCode);
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+		BufferedReader in = null;
+		if ("gzip".equals(conn.getContentEncoding())) {
+			in = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream())));
+		} else {
+			in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+		}
+
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 

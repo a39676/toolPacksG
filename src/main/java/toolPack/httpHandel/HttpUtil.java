@@ -138,23 +138,28 @@ public class HttpUtil {
 			throws IOException, URISyntaxException {
 
 		URL obj = new URI(url).toURL();
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 
-		con.setRequestMethod(httpMethod);
+		conn.setRequestMethod(httpMethod);
 
 		if (StringUtils.isBlank(userAgent)) {
-			con.setRequestProperty("User-Agent", defaultUserAgent);
+			conn.setRequestProperty("User-Agent", defaultUserAgent);
 		} else {
-			con.setRequestProperty("User-Agent", userAgent);
+			conn.setRequestProperty("User-Agent", userAgent);
 		}
 
 		if (keyValues != null && keyValues.size() > 0) {
 			for (Map.Entry<String, String> entry : keyValues.entrySet()) {
-				con.setRequestProperty(entry.getKey(), entry.getValue());
+				conn.setRequestProperty(entry.getKey(), entry.getValue());
 			}
 		}
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+		BufferedReader in = null;
+		if ("gzip".equals(conn.getContentEncoding())) {
+			in = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream())));
+		} else {
+			in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+		}
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 
@@ -162,7 +167,7 @@ public class HttpUtil {
 			response.append(inputLine);
 		}
 		in.close();
-		con.disconnect();
+		conn.disconnect();
 
 		return response.toString();
 
@@ -175,7 +180,7 @@ public class HttpUtil {
 	public String sendPost(String url, String urlParameters, Map<String, String> requestPropertyMap)
 			throws IOException, URISyntaxException {
 //		String urlParameters = "{\"version\":\"2\", \"platform\":\"1\", \"status\":\"0\", \"des\":\"\"}";
-		HttpURLConnection con = null;
+		HttpURLConnection conn = null;
 		StringBuilder response = new StringBuilder();
 
 		byte[] postData = null;
@@ -186,26 +191,31 @@ public class HttpUtil {
 		try {
 
 			URL myurl = new URI(url).toURL();
-			con = (HttpURLConnection) myurl.openConnection();
+			conn = (HttpURLConnection) myurl.openConnection();
 
-			con.setDoOutput(true);
-			con.setRequestMethod(post);
+			conn.setDoOutput(true);
+			conn.setRequestMethod(post);
 
 			if (requestPropertyMap == null) {
 				requestPropertyMap = builddefaultRequestPropertyMap();
 			}
 
 			for (Entry<String, String> entry : requestPropertyMap.entrySet()) {
-				con.setRequestProperty(entry.getKey(), entry.getValue());
+				conn.setRequestProperty(entry.getKey(), entry.getValue());
 			}
 
 			if (postData != null) {
-				DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+				DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
 				wr.write(postData);
 				wr.flush();
 			}
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			BufferedReader in = null;
+			if ("gzip".equals(conn.getContentEncoding())) {
+				in = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream())));
+			} else {
+				in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+			}
 			String line;
 
 			while ((line = in.readLine()) != null) {
@@ -214,8 +224,8 @@ public class HttpUtil {
 			}
 
 		} finally {
-			if (con != null) {
-				con.disconnect();
+			if (conn != null) {
+				conn.disconnect();
 			}
 		}
 		return response.toString();
